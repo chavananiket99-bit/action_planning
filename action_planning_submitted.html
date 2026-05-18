@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M-CARES Survey - Action Planning Form</title>
+    <link
+      rel="stylesheet"
+      href="https://fontsstorage.blob.core.windows.net/html/css/georama.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link href="style.css" />
+
+    <style>
+      body {
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+        font-family: "Georama-Regular";
+        letter-spacing: 0.03rem;
+        padding-bottom: 60px;
+      }
+      :root {
+        --mahindra-red: #e31837;
+      }
+      .navbar {
+        background-color: var(--mahindra-red);
+        color: white;
+        border-bottom: 1px solid #b91c31;
+      }
+      .profile-info {
+        font-size: 11.38px;
+      }
+      .btn-logout {
+        background: #ffffff1a;
+        border: 1px solid #ffffff33;
+        border-radius: 8.75px;
+        letter-spacing: 0.03rem;
+        font-size: 12.25px;
+      }
+      .btn-logout a {
+        text-decoration: none;
+        color: white;
+      }
+      .btn-logout:hover a {
+        color: #e31837;
+      }
+      .btn-logout:hover svg path {
+        stroke: #e31837;
+      }
+      .footer {
+        background: #231f20;
+        border: 1px solid #364153;
+        color: #ffffffb2;
+        padding: 10px 0;
+        font-size: 11.38px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+      }
+      .main-manu-div {
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0px 1px 2px -1px #0000001a;
+        box-shadow: 0px 1px 3px 0px #0000001a;
+        padding: 10px 80px;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+      .menu-item {
+        font-weight: 500;
+        font-size: 12.25px;
+        color: #4d4d4f;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .menu-item:hover {
+        color: var(--mahindra-red) !important;
+      }
+      .menu-item.active {
+        color: #e31837 !important;
+        border-bottom: 2px solid #e31837;
+      }
+      .card {
+        border: 1px solid #4d4d4f33;
+      }
+
+      @media (max-width: 576px) {
+        h4 {
+          font-size: 1.2rem;
+        }
+        .profile-name {
+          display: none;
+        }
+        .main-manu-div {
+          padding: 10px 10px;
+        }
+      }
+
+      .hidden {
+        display: none !important;
+      }
+      .btn.active,
+      .btn:first-child:active {
+        border: none !important;
+      }
+      .form-section-container {
+        /* max-height: calc(100vh - 180px);
+          overflow-y: auto; */
+        padding-bottom: 10px;
+        margin: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .card-body {
+          padding: 0.75rem;
+        }
+        .main-manu-div {
+          padding: 10px;
+        }
+      }
+
+      .action-summary-table thead th {
+        background-color: var(--mahindra-red) !important;
+        color: white;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: center;
+        border: 1px solid #fff;
+        vertical-align: middle;
+      }
+      .action-summary-table td {
+        border: 1px solid #dee2e6 !important;
+        font-size: 12px;
+        vertical-align: middle;
+      }
+      .btn-mahindra {
+        background-color: var(--mahindra-red);
+        color: white;
+        border: none;
+      }
+      .btn-mahindra:hover {
+        background-color: #b91c31;
+        color: white;
+      }
+      .btn-another-goal,
+      .btn-goal-submit,
+      .btn-download {
+        color: #000;
+        background-color: #fff;
+        border-radius: 0;
+      }
+      .btn-another-goal:hover,
+      .btn-goal-submit:hover,
+      .btn-download:hover {
+        color: #fff;
+        background-color: #e31837;
+      }
+      .survey-toast {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 99999;
+        background: #231f20;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-left: 4px solid var(--mahindra-red);
+        min-width: 300px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .survey-toast.hidden {
+        opacity: 0;
+        visibility: hidden;
+        top: -20px;
+      }
+      .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .toast-icon {
+        font-size: 20px;
+        color: var(--mahindra-red);
+      }
+      .toast-body h6 {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .toast-body p {
+        font-size: 12px;
+        color: #ffffffb2;
+      }
+      .btn-cancel,
+      .btn-cancel:hover {
+        background-color: #000;
+        border-radius: 0;
+        color: #fff;
+      }
+      .btn-delete,
+      .btn-delete:hover {
+        background-color: #e31837;
+        border-radius: 0;
+        color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar px-4 py-3 d-flex justify-content-between">
+      <img src="images/mahindra_white.png" alt="Mahindra" height="18" />
+      <div class="small profile-info">
+        <span class="profile-name" id="welcomeName">Welcome, User |</span>
+        <button
+          id="hrSpocBtn"
+          class="btn btn-sm btn-outline-light ms-2 btn-logout hidden"
+        >
+          <a class="logout" href="index.html"> HR SPOC View </a>
+        </button>
+
+        <button class="btn btn-sm btn-outline-light ms-2 btn-logout">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="https://apc01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&data=05%7C02%7Cchavan.aniket%40mahindra.com%7C3788ab235de242e595d708de705f0d99%7C8c4858b5f020483ab7ef71ded6e81767%7C0%7C0%7C639071751477331840%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C40000%7C%7C%7C&sdata=%2FHCS83kyynb%2BlW3jcq4Q2mdMYAzu6mFq4i1mJJfVfi4%3D&reserved=0"
+          >
+            <path
+              d="M5.25 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V2.91667C1.75 2.60725 1.87292 2.3105 2.09171 2.09171C2.3105 1.87292 2.60725 1.75 2.91667 1.75H5.25"
+              stroke="white"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9.33325 9.91671L12.2499 7.00004L9.33325 4.08337"
+              stroke="white"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12.25 7H5.25"
+              stroke="white"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <a class="logout" href="login.html"> Logout </a>
+        </button>
+      </div>
+    </nav>
+
+    <div class="bg-white mb-3 main-manu-div">
+      <div class="d-flex flex-wrap align-items-center">
+        <span
+          class="text-muted me-3 small menu-item"
+          onclick="location.href = 'overview.html'"
+          >Overview</span
+        >
+        <span
+          class="text-muted me-3 small menu-item"
+          id="survey"
+          onclick="location.href = 'mcares_ui.html'"
+        >
+          My Survey</span
+        >
+        <span
+          class="text-muted me-3 small menu-item"
+          id="scoreCard"
+          onclick="location.href = 'scorecard-main.html'"
+          >Scorecard</span
+        >
+        <span
+          class="text-muted me-3 small menu-item active"
+          id="actionPlanning"
+          onclick="location.href = 'action_planning.html'"
+          >Action Planning</span
+        >
+      </div>
+    </div>
+
+    <div class="form-section-container">
+      <div class="container-fluid">
+        <div class="card shadow-sm">
+          <div
+            class="card-header bg-dark text-white d-flex align-items-center gap-2"
+          >
+            <button
+              class="btn btn-sm btn-outline-light"
+              onclick="goBackToMainPage()"
+            >
+              <i class="fa fa-arrow-left"></i>
+            </button>
+            <span class="flex-grow-1">Action Planning Details</span>
+
+            <div>
+              <button
+                id="addAnotherGoalBtn"
+                class="btn btn-another-goal btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#actionPlanningModal"
+                onclick="resetModalState()"
+              >
+                Add Another Goal
+              </button>
+              <button
+                id="submitBtn"
+                class="btn btn-goal-submit btn-sm ms-1"
+                onclick="openSubmitConfirmation()"
+              >
+                Submit
+              </button>
+              <button
+                id="downloadBtn"
+                class="btn btn-download btn-sm ms-1 hidden"
+                onclick="downloadActionPlan()"
+              >
+                <i class="fa fa-download me-1"></i>Download
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered mb-0 action-summary-table">
+                <thead>
+                  <tr>
+                    <th>MCARES Dimension</th>
+                    <th>MCARES Item</th>
+                    <th>Current Year Score</th>
+                    <th>Desired Outcome</th>
+                    <th>Action Goals</th>
+                    <th>Action Steps</th>
+                    <th>Resources Required</th>
+                    <th>Responsibility</th>
+                    <th>Completion Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="summaryTableBody">
+                  <!-- Data will be loaded dynamically via API -->
+                  <tr>
+                    <td colspan="10" class="text-center">Loading...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer text-center">
+      © 2026 Mahindra Group. All rights reserved.
+    </footer>
+
+    <!-- jQuery for API calls -->
+    <script src="js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      var apId = sessionStorage.getItem("apId") || "0";
+      var isAPSubmit = sessionStorage.getItem("isAPSubmit") || "";
+      var actionMode = sessionStorage.getItem("actionMode") || "view";
+      var deleteGoalId = "0";
+
+      function getInitEmpData() {
+        var message = "intialDataEmp";
+        var jsonDataFromServer = "";
+        var jsonDataToServer = null;
+        jsonDataFromServer = sendData(
+          message,
+          jsonDataToServer,
+          "dataController",
+        );
+        return jsonDataFromServer;
+      }
+
+      function setWelcomeName(name) {
+        const welcomeEl = document.getElementById("welcomeName");
+        if (!welcomeEl) return;
+        const safe = String(name || "").trim();
+        welcomeEl.textContent = `Welcome, ${safe || "User"} |`;
+      }
+
+      function initWelcomeEarly() {
+        try {
+          const raw = getInitEmpData();
+          const initEmpData = typeof raw === "string" ? JSON.parse(raw) : raw;
+
+          window.__initEmpData = initEmpData || window.__initEmpData;
+
+          const empName =
+            initEmpData?.userDetails?.employeefullname ||
+            initEmpData?.employee?.name ||
+            initEmpData?.empName ||
+            initEmpData?.userName;
+          setWelcomeName(empName);
+          const hrBtn = document.getElementById("hrSpocBtn");
+          if (hrBtn) {
+            const allowed = isSpocUser(initEmpData);
+            hrBtn.classList.toggle("hidden", !allowed);
+          }
+        } catch (e) {
+          console.warn("initWelcomeEarly: failed to init", e);
+          const hrBtn = document.getElementById("hrSpocBtn");
+          if (hrBtn) hrBtn.classList.add("hidden");
+        }
+      }
+
+      function sendData(message, data, svrUrl) {
+        var returnData = null;
+        $.ajax({
+          type: "POST",
+          url: svrUrl,
+          async: false,
+          data: {
+            message: message,
+            JDATA: data,
+          },
+          success: function (data) {
+            returnData = data;
+          },
+          error: function (xhr, ajaxOptions, throwError) {
+            console.error("API Error:", throwError);
+          },
+        });
+        return returnData;
+      }
+
+      $(document).ready(function () {
+        initSubmittedPage();
+      });
+
+      function initSubmittedPage() {
+        var userData = sendData("getUserDetails", null, "dataController");
+        if (userData != null && userData != "") {
+          userData = jQuery.parseJSON(userData);
+          var welcomeName = userData.employeeName || "User";
+          $("#welcomeName").text("Welcome, " + welcomeName + " |");
+        }
+
+        if (apId && apId != "0") {
+          loadActionPlanData();
+        }
+
+        checkSubmitStatus();
+      }
+
+      function checkSubmitStatus() {
+        if (isAPSubmit && isAPSubmit.indexOf("Yes") == 0) {
+          $("#addAnotherGoalBtn").addClass("hidden");
+          $("#submitBtn").addClass("hidden");
+          $("#downloadBtn").removeClass("hidden");
+          $(".action-col").hide();
+          $("th")
+            .filter(function () {
+              return $(this).text().trim() === "Action";
+            })
+            .hide();
+          return;
+        }
+
+        if (actionMode === "viewManager" || actionMode === "viewReportees") {
+          $("#addAnotherGoalBtn").addClass("hidden");
+          $("#submitBtn").addClass("hidden");
+          $("#downloadBtn").removeClass("hidden");
+          $(".action-col").hide();
+          $("th")
+            .filter(function () {
+              return $(this).text().trim() === "Action";
+            })
+            .hide();
+        }
+      }
+
+      function loadActionPlanData() {
+        var jsonDataToServer = "{'apId':'" + apId + "'}";
+        var apData = sendData(
+          "viewActionPlan",
+          jsonDataToServer,
+          "ActionPlanController",
+        );
+
+        if (apData != null && apData != "") {
+          apData = jQuery.parseJSON(apData);
+          populateActionPlanTable(apData);
+        }
+      }
+
+      function populateActionPlanTable(apDataList) {
+        var tbody = $("#summaryTableBody");
+        tbody.empty();
+
+        if (!apDataList || apDataList.length === 0) {
+          tbody.append(
+            '<tr><td colspan="10" class="text-center">No action plans found. Click "Add Another Goal" to create one.</td></tr>',
+          );
+          return;
+        }
+
+        var rowno = 1;
+        var dimensionrowspan = 2,
+          itemrowspan = 2,
+          goalrowspan = 2;
+        var dimensioncount = 0,
+          itemcount = 0,
+          goalcount = 0;
+
+        $.each(apDataList, function (idx, apData) {
+          var tr = $("<tr/>");
+          tr.append(
+            '<td data-title="MCARES Dimension" id="' +
+              rowno +
+              '-1">' +
+              apData.dimension +
+              "</td>",
+          );
+          tr.append(
+            '<td data-title="MCARES Item" id="' +
+              rowno +
+              '-2">' +
+              apData.item +
+              "</td>",
+          );
+          tr.append(
+            '<td data-title="Current Year Score" id="' +
+              rowno +
+              '-3">' +
+              apData.curr_year_score +
+              "</td>",
+          );
+          tr.append(
+            '<td data-title="Desired Outcome" id="' +
+              rowno +
+              '-10">' +
+              apData.desiredOutcome +
+              "</td>",
+          );
+          tr.append(
+            '<td data-title="Action Goals" id="' +
+              rowno +
+              '-4">' +
+              apData.action_goal +
+              "</td>",
+          );
+          tr.append(
+            '<td data-title="Action Steps" id="' +
+              rowno +
+              '-5">' +
+              apData.actionSteps +
+              "</td>",
+          );
+          tr.append(
+            '<td data-title="Resources Required" id="' +
+              rowno +
+              '-6">' +
+              apData.resourseRequired +
+              "</td>",
+          );
+          tr.append(
+            '<td data-title="Responsibility" id="' +
+              rowno +
+              '-7">' +
+              apData.responsibility +
+              "</td>",
+          );
+
+          var x = apData.completionDate.split(" ")[0];
+          var y = x.replace(/-/g, "/");
+          tr.append(
+            '<td data-title="Completion Date" id="' +
+              rowno +
+              '-8">' +
+              y +
+              "</td>",
+          );
+
+          tr.append(
+            '<td class="action-col text-center" data-title="Actions" id="' +
+              rowno +
+              '-9">' +
+              '<span class="p-1 table-action-btn" onclick="editGoal(' +
+              apData.action_goal_id +
+              ')" style="cursor:pointer;">' +
+              '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">' +
+              '<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>' +
+              "</svg></span>" +
+              '<span class="p-1 table-action-btn" onclick="confirmDeleteGoal(' +
+              apData.action_goal_id +
+              ')" style="cursor:pointer;">' +
+              '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">' +
+              '<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>' +
+              '<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>' +
+              "</svg></span>" +
+              "</td>",
+          );
+
+          tbody.append(tr);
+
+          if (idx >= 1) {
+            if (apDataList[idx].dimension == apDataList[idx - 1].dimension) {
+              $("#" + (rowno - dimensioncount - 1) + "-1").attr(
+                "rowspan",
+                dimensionrowspan,
+              );
+              $("#" + rowno + "-1").remove();
+
+              if (apDataList[idx].itemId == apDataList[idx - 1].itemId) {
+                $("#" + (rowno - itemcount - 1) + "-2").attr(
+                  "rowspan",
+                  itemrowspan,
+                );
+                $("#" + rowno + "-2").remove();
+
+                $("#" + (rowno - itemcount - 1) + "-3").attr(
+                  "rowspan",
+                  itemrowspan,
+                );
+                $("#" + rowno + "-3").remove();
+
+                $("#" + (rowno - itemcount - 1) + "-10").attr(
+                  "rowspan",
+                  itemrowspan,
+                );
+                $("#" + rowno + "-10").remove();
+
+                if (
+                  apDataList[idx].action_goal_id ==
+                  apDataList[idx - 1].action_goal_id
+                ) {
+                  $("#" + (rowno - goalcount - 1) + "-4").attr(
+                    "rowspan",
+                    goalrowspan,
+                  );
+                  $("#" + rowno + "-4").remove();
+
+                  $("#" + (rowno - goalcount - 1) + "-9").attr(
+                    "rowspan",
+                    goalrowspan,
+                  );
+                  $("#" + rowno + "-9").remove();
+
+                  goalrowspan++;
+                  goalcount++;
+                } else {
+                  goalrowspan = 2;
+                  goalcount = 0;
+                }
+                itemrowspan++;
+                itemcount++;
+              } else {
+                itemrowspan = 2;
+                itemcount = 0;
+                goalrowspan = 2;
+                goalcount = 0;
+              }
+              dimensionrowspan++;
+              dimensioncount++;
+            } else {
+              dimensionrowspan = 2;
+              dimensioncount = 0;
+              itemrowspan = 2;
+              itemcount = 0;
+              goalrowspan = 2;
+              goalcount = 0;
+            }
+          }
+          rowno++;
+        });
+
+        checkSubmitStatus();
+      }
+
+      function goBackToMainPage() {
+        window.location.href = "action_planning.html";
+      }
+
+      function resetModalState() {
+        sessionStorage.setItem("actionMode", "add");
+        sessionStorage.setItem("editGoalId", "0");
+        window.location.href = "action_planning_form.html";
+      }
+
+      function showToast(message, type = "success") {
+        const toast = document.getElementById("surveyToast");
+        const msg = document.getElementById("toastMessage");
+        const icon = toast.querySelector(".toast-icon i");
+        const title = toast.querySelector(".toast-body h6");
+
+        if (!toast || !msg || !icon || !title) return;
+
+        const normalizedType = (type || "success").toLowerCase();
+        if (normalizedType === "error") {
+          icon.className = "fas fa-times-circle";
+          title.innerText = "Error";
+        } else if (normalizedType === "warning") {
+          icon.className = "fas fa-exclamation-triangle";
+          title.innerText = "Warning";
+        } else if (normalizedType === "info") {
+          icon.className = "fas fa-info-circle";
+          title.innerText = "Info";
+        } else {
+          icon.className = "fas fa-check-circle";
+          title.innerText = "Success";
+        }
+
+        msg.innerHTML = message;
+        toast.classList.remove("hidden");
+
+        if (toast._toastTimeout) {
+          clearTimeout(toast._toastTimeout);
+        }
+
+        toast._toastTimeout = setTimeout(() => {
+          toast.classList.add("hidden");
+        }, 4000);
+      }
+
+      function editGoal(goalId) {
+        sessionStorage.setItem("actionMode", "edit");
+        sessionStorage.setItem("editGoalId", goalId);
+        window.location.href = "action_planning_form.html";
+      }
+
+      function confirmDeleteGoal(goalId) {
+        deleteGoalId = goalId;
+        const modal = new bootstrap.Modal(
+          document.getElementById("deleteConfirmationModal"),
+        );
+        modal.show();
+      }
+
+      function proceedDelete() {
+        deleteGoal();
+      }
+
+      function deleteGoal() {
+        if (deleteGoalId != "0") {
+          var jsonDataToServer = "{'goalId':'" + deleteGoalId + "'}";
+          var response = sendData(
+            "remove_curr_goal",
+            jsonDataToServer,
+            "ActionPlanController",
+          );
+
+          if (response == '"goal_deleted"' || response == '"plan_deleted"') {
+            showToast("Action Plan Goal Deleted Successfully", "success");
+            loadActionPlanData();
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("deleteConfirmationModal"),
+            );
+            if (modal) {
+              modal.hide();
+            }
+          } else {
+            showToast("Failed to delete goal. Please try again.", "error");
+          }
+        }
+      }
+
+      function submitSurvey() {
+        if (!apId || apId == "0") {
+          alert("No action plan to submit");
+          return;
+        }
+
+        var jsonDataToServer = "{'apId':'" + apId + "'}";
+        var response = sendData(
+          "submitAP",
+          jsonDataToServer,
+          "ActionPlanController",
+        );
+
+        if (response == "true") {
+          isAPSubmit = "Yes";
+          sessionStorage.setItem("isAPSubmit", "Yes");
+          checkSubmitStatus();
+          showToast("Action Plan Submitted Successfully!", "success");
+          window.open("actionPlanPdf.html?path=" + apId);
+        } else {
+          alert("Action Plan is Not Submitted. Please try again.");
+        }
+      }
+
+      function openSubmitConfirmation() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("submitConfirmationModal"),
+        );
+        modal.show();
+      }
+
+      function confirmSubmitSurvey() {
+        const submitModal = bootstrap.Modal.getInstance(
+          document.getElementById("submitConfirmationModal"),
+        );
+        if (submitModal) {
+          submitModal.hide();
+        }
+        submitSurvey();
+      }
+
+      function downloadActionPlan() {
+        if (!apId || apId == "0") {
+          alert("No action plan to download");
+          return;
+        }
+
+        var htmlContent = document.querySelector(
+          ".action-summary-table",
+        ).outerHTML;
+
+        var formData = new FormData();
+        formData.append("message", "downloadActionPlan");
+        formData.append("HtmlData", htmlContent);
+
+        $.ajax({
+          type: "POST",
+          url: "ActionPlanPDFController",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function () {
+            window.open("ActionPlanPDFController");
+            showToast("Action Plan downloaded successfully", "success");
+          },
+          error: function (xhr, ajaxOptions, throwError) {
+            console.error("Download Error:", throwError);
+            alert("Failed to download the action plan. Please try again.");
+          },
+        });
+      }
+
+      function logoutUser() {
+        sendData("logout", null, "login");
+        window.location = "login.html";
+      }
+
+      $(document).ready(function () {
+        $(".logout").click(function (e) {
+          e.preventDefault();
+          logoutUser();
+        });
+      });
+
+      window.addEventListener("load", function () {
+        console.log("Page Loaded");
+        initWelcomeEarly();
+      });
+    </script>
+
+    <!-- Toast Notification -->
+    <div id="surveyToast" class="survey-toast hidden">
+      <div class="toast-content">
+        <div class="toast-icon">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="toast-body">
+          <h6 class="mb-0">Notification</h6>
+          <p class="mb-0" id="toastMessage"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="submitConfirmationModal"
+      tabindex="-1"
+      aria-labelledby="submitConfirmationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="submitConfirmationModalLabel">
+              Submit Action Plan
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Are you sure you want to submit this Action Plan? Once submitted,
+              you cannot make further changes.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-cancel btn-sm"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-mahindra btn-sm"
+              onclick="confirmSubmitSurvey()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="deleteConfirmationModal"
+      tabindex="-1"
+      aria-labelledby="deleteConfirmationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteConfirmationModalLabel">
+              Confirm Delete
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete this goal?</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-cancel btn-sm"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-delete btn-sm"
+              onclick="proceedDelete()"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

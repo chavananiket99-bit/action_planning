@@ -1,0 +1,3011 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M-CARES Survey - Action Planning Form</title>
+    <link
+      rel="stylesheet"
+      href="https://fontsstorage.blob.core.windows.net/html/css/georama.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link href="style.css" />
+
+    <style>
+      body {
+        background-color: #f8f9fa;
+        overflow-x: hidden;
+        font-family: "Georama-Regular";
+        letter-spacing: 0.03rem;
+        padding-bottom: 60px;
+      }
+      :root {
+        --mahindra-red: #e31837;
+      }
+      .navbar {
+        background-color: var(--mahindra-red);
+        color: white;
+        border-bottom: 1px solid #b91c31;
+      }
+      .profile-info {
+        font-size: 11.38px;
+      }
+      .btn-logout {
+        background: #ffffff1a;
+        border: 1px solid #ffffff33;
+        border-radius: 8.75px;
+        letter-spacing: 0.03rem;
+        font-size: 12.25px;
+      }
+      .btn-logout a {
+        text-decoration: none;
+        color: white;
+      }
+      .btn-logout:hover a {
+        color: #e31837;
+      }
+      .btn-logout:hover svg path {
+        stroke: #e31837;
+      }
+      .footer {
+        background: #231f20;
+        border: 1px solid #364153;
+        color: #ffffffb2;
+        padding: 10px 0;
+        font-size: 11.38px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+      }
+      .main-manu-div {
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0px 1px 2px -1px #0000001a;
+        box-shadow: 0px 1px 3px 0px #0000001a;
+        padding: 10px 80px;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+      .menu-item {
+        font-weight: 500;
+        font-size: 12.25px;
+        color: #4d4d4f;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .menu-item:hover {
+        color: var(--mahindra-red) !important;
+      }
+      .menu-item.active {
+        color: #e31837 !important;
+        border-bottom: 2px solid #e31837;
+      }
+      .card {
+        border: 1px solid #4d4d4f33;
+      }
+      .form-label,
+      select.form-select,
+      .form-control {
+        font-size: 13px;
+      }
+
+      @media (max-width: 576px) {
+        h4 {
+          font-size: 1.2rem;
+        }
+        .profile-name {
+          display: none;
+        }
+        .main-manu-div {
+          padding: 10px 10px;
+        }
+      }
+
+      .hidden {
+        display: none !important;
+      }
+      .ai-icon {
+        cursor: pointer;
+        position: relative;
+      }
+      .ai-icon:hover::after {
+        content: "AI Suggestions";
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 4px 8px;
+        font-size: 10px;
+        border-radius: 4px;
+        white-space: nowrap;
+        z-index: 100;
+      }
+      .ai-icon,
+      .ai-icon img {
+        width: 15px;
+      }
+      .action-step-row {
+        background: white;
+        padding: 0;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+        margin-bottom: 12px;
+        overflow: hidden;
+      }
+      .action-step-row .step-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        background: #f8f9fa;
+        border-left: 3px solid #e31837;
+        cursor: pointer;
+        user-select: none;
+      }
+      .action-step-row .step-header .step-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        background: #e31837;
+        color: white;
+        border-radius: 50%;
+        font-weight: 600;
+        font-size: 11px;
+      }
+      .action-step-row .step-header .step-title {
+        flex: 1;
+        font-weight: 500;
+        color: #333;
+        font-size: 13px;
+      }
+      .action-step-row .step-header .step-toggle {
+        color: #e31837;
+        font-size: 13px;
+        transition: transform 0.3s ease;
+      }
+      .action-step-row .step-header .step-toggle.collapsed {
+        transform: rotate(-90deg);
+      }
+      .action-step-row .step-content {
+        padding: 10px;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.4s ease,
+          opacity 0.4s ease;
+        opacity: 0;
+        display: block;
+        position: relative;
+      }
+      .action-step-row .step-content.expanded {
+        max-height: 500px;
+        opacity: 1;
+        overflow: visible;
+      }
+      .cursor-pointer {
+        cursor: pointer;
+      }
+      .btn.active,
+      .btn.show,
+      .btn:first-child:active {
+        border: none !important;
+      }
+      .abbreviation-overlay {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        max-width: 1000px;
+        width: 90%;
+        max-height: 90vh;
+        animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .abbreviation-overlay-header {
+        padding: 5px 10px;
+        border-bottom: 1px solid #e5e7eb;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .abbreviation-overlay-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+      }
+      .abbreviation-overlay-footer {
+        padding: 16px 24px;
+        border-top: 1px solid #e5e7eb;
+        flex-shrink: 0;
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .abbreviation-overlay .abbreviation-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 12px;
+        border-top: 1px solid #e5e7eb;
+        padding-top: 10px;
+      }
+      .abbreviation-overlay .abbreviation-buttons button {
+        font-size: 11px;
+        padding: 4px 10px;
+      }
+      .ai-summary-section {
+        background: #e8f4f8;
+        padding: 6px 12px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        border-left: 4px solid #e31837;
+      }
+      .ai-summary-section p {
+        font-size: 12px;
+        color: #333;
+        margin: 0;
+        line-height: 1.4;
+      }
+      .form-group-abbr {
+        margin-bottom: 12px;
+      }
+      .form-group-abbr label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #231f20;
+        margin-bottom: 4px;
+        display: block;
+      }
+      .form-group-abbr input,
+      .form-group-abbr select,
+      .form-group-abbr textarea {
+        font-size: 12px;
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      .form-group-abbr textarea {
+        resize: vertical;
+        min-height: 50px;
+      }
+      .suggested-plans-section {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .suggested-plans-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #231f20;
+        margin-bottom: 6px;
+      }
+      .action-plan-card {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin-bottom: 10px;
+      }
+      .action-plan-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+      }
+      .action-plan-card-header-left {
+        flex: 1;
+        position: relative;
+      }
+      .action-plan-card-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #231f20;
+        margin-bottom: 4px;
+      }
+      .action-plan-card-focus {
+        font-size: 12px;
+        color: #e31837;
+        font-weight: 500;
+      }
+      .action-plan-card-icons {
+        display: flex;
+        gap: 4px;
+      }
+      .action-plan-card-icons button {
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .action-plan-card-icons .btn-edit-icon {
+        color: #e31837;
+      }
+      .action-plan-card-icons .btn-edit-icon:hover {
+        color: #e31837;
+        transform: scale(1.2);
+      }
+      .action-plan-card-field {
+        margin-bottom: 8px;
+      }
+      .action-plan-card-fields-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .action-plan-card-fields-row .action-plan-card-field {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 768px) {
+        .action-plan-card-fields-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .action-plan-card-field-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #231f20;
+        margin-bottom: 4px;
+        display: block;
+      }
+      .action-plan-card-field-value {
+        font-size: 12px;
+        color: #666;
+        line-height: 1.4;
+      }
+      .action-plan-card-field-input {
+        font-size: 12px;
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      .action-plan-card-field-input textarea {
+        resize: vertical;
+        min-height: 40px;
+      }
+      .edit-mode .action-plan-card-field-value {
+        display: none;
+      }
+      .action-plan-card-field-value.hidden {
+        display: none;
+      }
+      .action-plan-card-field-input.hidden {
+        display: none;
+      }
+      .btn-save-changes {
+        background: #e31837;
+        color: white;
+        border-color: #e31837;
+      }
+      .btn-save-changes:hover {
+        background: #c1152f;
+        color: #fff;
+      }
+      .btn-cancel {
+        background: white;
+        color: #333;
+        border-color: #ddd;
+      }
+      .btn-cancel:hover {
+        background: #f8f9fa;
+        color: #000;
+      }
+      .ai-overlays-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2000;
+      }
+      .ai-overlays-container > div {
+        pointer-events: auto;
+      }
+      .survey-toast {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 99999;
+        background: #231f20;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        border-left: 4px solid var(--mahindra-red);
+        min-width: 300px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .survey-toast.hidden {
+        opacity: 0;
+        visibility: hidden;
+        top: -20px;
+      }
+      .toast-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .toast-icon {
+        font-size: 20px;
+        color: var(--mahindra-red);
+      }
+      .toast-body h6 {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .toast-body p {
+        font-size: 12px;
+        color: #ffffffb2;
+      }
+      .ai-section-overlay {
+        position: fixed;
+        z-index: 2001;
+        background: white;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 300px;
+        max-height: 300px;
+        overflow-y: auto;
+        animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+      .ai-section-overlay h6 {
+        color: #231f20;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .ai-section-overlay h6 i {
+        color: #e31837;
+        font-size: 14px;
+      }
+      .ai-suggestions-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .ai-suggestion-item {
+        background: #f8f9fa;
+        padding: 8px;
+        border-radius: 4px;
+        border-left: 3px solid #e31837;
+        cursor: pointer;
+        font-size: 12px;
+        color: #333;
+        transition: all 0.2s ease;
+      }
+      .ai-suggestion-item:hover {
+        background: #e31837;
+        color: white;
+      }
+      #abbrBtn {
+        background-color: #000;
+        color: #fff;
+      }
+      #abbrBtn .ai-icon {
+        width: 15px;
+      }
+      .form-section-container {
+        /* max-height: calc(100vh - 180px);
+          overflow-y: auto; */
+        padding-bottom: 10px;
+        margin: 20px;
+      }
+      .btn-save-changes {
+        border-radius: 0;
+        background-color: #e31837;
+      }
+      .btn-cancel {
+        border-radius: 0;
+      }
+
+      @media (max-width: 768px) {
+        .card-body {
+          padding: 0.75rem;
+        }
+        .form-label {
+          font-size: 12px;
+        }
+        .main-manu-div {
+          padding: 10px;
+        }
+      }
+
+      #toggleMcaresText {
+        display: none;
+      }
+      #toggleMcaresIcon {
+        color: #e31837;
+      }
+      select:focus,
+      input:focus,
+      textarea:focus {
+        border-color: inherit !important;
+        box-shadow: none !important;
+      }
+      .button-add-delete {
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        display: flex;
+      }
+      .btn-update,
+      .btn-add {
+        border: 0;
+        border-radius: 0;
+        background-color: #e31837;
+        color: #fff;
+      }
+      .btn-update:hover,
+      .btn-add:hover {
+        background-color: #e31837;
+        color: #fff;
+      }
+      .add-action-plan {
+        border-radius: 0;
+      }
+      .action-plan-card-header-left .step-number {
+        top: -12px;
+        left: -14px;
+        font-size: 10px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        background-color: #e31837;
+        border-radius: 50%;
+        text-align: center;
+        height: 15px;
+        width: 15px;
+        position: absolute;
+        color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar px-4 py-3 d-flex justify-content-between">
+      <img src="images/mahindra_white.png" alt="Mahindra" height="18" />
+      <div class="small profile-info">
+        <span class="profile-name" id="welcomeName">Welcome, User |</span>
+        <button
+          id="hrSpocBtn"
+          class="btn btn-sm btn-outline-light ms-2 btn-logout hidden"
+        >
+          <a class="logout" href="index.html"> HR SPOC View </a>
+        </button>
+
+        <button class="btn btn-sm btn-outline-light ms-2 btn-logout">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="https://apc01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&data=05%7C02%7Cchavan.aniket%40mahindra.com%7C3788ab235de242e595d708de705f0d99%7C8c4858b5f020483ab7ef71ded6e81767%7C0%7C0%7C639071751477331840%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C40000%7C%7C%7C&sdata=%2FHCS83kyynb%2BlW3jcq4Q2mdMYAzu6mFq4i1mJJfVfi4%3D&reserved=0"
+          >
+            <path
+              d="M5.25 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V2.91667C1.75 2.60725 1.87292 2.3105 2.09171 2.09171C2.3105 1.87292 2.60725 1.75 2.91667 1.75H5.25"
+              stroke="white"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9.33325 9.91671L12.2499 7.00004L9.33325 4.08337"
+              stroke="white"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12.25 7H5.25"
+              stroke="white"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <a class="logout" href="login.html"> Logout </a>
+        </button>
+      </div>
+    </nav>
+
+    <div class="bg-white mb-3 main-manu-div">
+      <div class="d-flex flex-wrap align-items-center">
+        <span
+          class="text-muted me-3 small menu-item"
+          onclick="location.href = 'overview.html'"
+          >Overview</span
+        >
+        <span
+          class="text-muted me-3 small menu-item"
+          id="survey"
+          onclick="location.href = 'mcares_ui.html'"
+        >
+          My Survey</span
+        >
+        <span
+          class="text-muted me-3 small menu-item"
+          id="scoreCard"
+          onclick="location.href = 'scorecard-main.html'"
+          >Scorecard</span
+        >
+        <span
+          class="text-muted me-3 small menu-item active"
+          id="actionPlanning"
+          onclick="location.href = 'action_planning.html'"
+          >Action Planning</span
+        >
+      </div>
+    </div>
+
+    <div class="form-section-container">
+      <div class="container-fluid">
+        <div class="card shadow-sm">
+          <div
+            class="card-header bg-dark text-white d-flex align-items-center gap-2"
+          >
+            <button
+              class="btn btn-sm btn-outline-light"
+              onclick="goBackToMainPage()"
+            >
+              <i class="fa fa-arrow-left"></i>
+            </button>
+            <span class="flex-grow-1">Define Action Planning</span>
+            <button
+              type="button"
+              id="abbrBtn"
+              class="btn btn-sm hidden"
+              onclick="showAbbreviationOverlay()"
+              title="View AI-Generated Plan"
+            >
+              <img
+                src="images/sparkle-ai-icon.svg"
+                class="me-1 ai-icon"
+              />Action Plan
+            </button>
+          </div>
+          <div class="card-body">
+            <form id="planForm">
+              <input type="hidden" id="modalItem" />
+              <div class="row mb-2">
+                <div class="col-md-3">
+                  <label class="form-label small text-secondary mb-1"
+                    >MCARES Dimension</label
+                  >
+                  <select
+                    class="form-select"
+                    id="modalDimension"
+                    onchange="showMcaresItemsTable()"
+                  >
+                    <option value="0">Select Dimension</option>
+                    <option value="3" data-title="Career">Career</option>
+                    <option value="4" data-title="Alignment">Alignment</option>
+                    <option value="5" data-title="Recognition">
+                      Recognition
+                    </option>
+                    <option value="6" data-title="Empowerment">
+                      Empowerment
+                    </option>
+                    <option value="7" data-title="Strive">Strive</option>
+                  </select>
+                </div>
+                <div class="col-md-9">
+                  <label
+                    class="form-label small text-secondary d-flex justify-content-between mb-1"
+                  >
+                    <span>Select MCARES Item</span>
+                    <button
+                      type="button"
+                      class="btn btn-link btn-sm p-0"
+                      id="toggleMcaresBtn"
+                      style="display: none"
+                      onclick="toggleMcaresItems()"
+                    >
+                      <i id="toggleMcaresIcon" class="fa fa-chevron-down"></i>
+                      <span id="toggleMcaresText">Collapse</span>
+                    </button>
+                  </label>
+                  <div
+                    id="mcaresItemsList"
+                    class="border rounded p-2 bg-light"
+                    style="
+                      max-height: 200px;
+                      overflow-y: auto;
+                      min-height: 40px;
+                      transition: max-height 0.3s ease;
+                    "
+                  >
+                    <!-- Dynamic Items -->
+                  </div>
+                </div>
+              </div>
+              <div id="mcaresItemSection" class="hidden"></div>
+              <div class="mb-2">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label small text-secondary mb-1"
+                    >Define Goal</label
+                  >
+                  <span
+                    class="ai-icon"
+                    title="AI Suggestions"
+                    onclick="toggleAISideDiv('goal', this)"
+                  >
+                    <img src="images/sparkle-ai-icon.svg" />
+                  </span>
+                </div>
+                <input type="text" class="form-control" id="modalGoal" />
+              </div>
+              <div class="mb-2">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-1"
+                >
+                  <label class="form-label small text-secondary mb-0"
+                    >Action Steps & Responsibility</label
+                  >
+                </div>
+
+                <div
+                  id="actionStepsContainer"
+                  class="border rounded p-2"
+                  style="background-color: #f8f9fa"
+                >
+                  <div class="action-step-row" data-row-index="0">
+                    <div class="step-header" onclick="toggleActionStepRow(0)">
+                      <div
+                        style="
+                          display: flex;
+                          align-items: center;
+                          gap: 12px;
+                          flex: 1;
+                        "
+                      >
+                        <div class="step-number">1</div>
+                        <div class="step-title">Action Step 1</div>
+                      </div>
+                      <div class="step-toggle">
+                        <i class="fa fa-chevron-down"></i>
+                      </div>
+                    </div>
+                    <div class="step-content expanded">
+                      <div class="button-add-delete">
+                        <button
+                          type="button"
+                          class="btn btn-sm"
+                          onclick="removeActionStepRow(0)"
+                          title="Delete"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-trash"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+                            ></path>
+                            <path
+                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+                            ></path>
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-sm"
+                          onclick="addActionStepRow()"
+                          title="Add"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-plus-circle"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+                            ></path>
+                            <path
+                              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="row mb-2 g-2">
+                        <div class="col-md-3 mt-0">
+                          <label class="form-label small text-secondary mb-1"
+                            >Action Steps
+                            <img
+                              class="ai-icon cursor-pointer"
+                              src="images/sparkle-ai-icon.svg"
+                              title="AI Suggestions"
+                              onclick="toggleAISideDiv('steps', this)"
+                            />
+                          </label>
+                          <textarea
+                            class="form-control form-control-sm action-step-input"
+                            placeholder="Enter steps..."
+                            rows="2"
+                          ></textarea>
+                        </div>
+                        <div class="col-md-3 mt-0">
+                          <label class="form-label small text-secondary mb-1"
+                            >Resources</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control form-control-sm resource-input"
+                            placeholder="Budget, etc..."
+                          />
+                        </div>
+                        <div class="col-md-3 mt-0">
+                          <label class="form-label small text-secondary mb-1"
+                            >Responsibility
+                            <img
+                              src="images/sparkle-ai-icon.svg"
+                              class="ai-icon cursor-pointer"
+                              title="AI Suggestions"
+                              onclick="toggleAISideDiv('responsibility', this)"
+                            />
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control form-control-sm responsibility-input"
+                            placeholder="Person/Team"
+                          />
+                        </div>
+                        <div class="col-md-3 mt-0">
+                          <label class="form-label small text-secondary mb-1"
+                            >Completion Date</label
+                          >
+                          <input
+                            type="date"
+                            class="form-control form-control-sm completion-date-input"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-2">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label small text-secondary"
+                    >Desired Outcome</label
+                  >
+                  <span
+                    class="ai-icon"
+                    title="AI Suggestions"
+                    onclick="toggleAISideDiv('outcome', this)"
+                  >
+                    <img src="images/sparkle-ai-icon.svg" />
+                  </span>
+                </div>
+                <input type="text" class="form-control" id="modalOutcome" />
+              </div>
+            </form>
+          </div>
+          <div class="card-footer bg-light d-flex justify-content-end">
+            <div>
+              <button
+                onclick="saveActionPlanFromForm()"
+                id="addBtn"
+                type="button"
+                class="btn btn-sm px-4 btn-add"
+              >
+                Add
+              </button>
+              <button
+                id="updateBtn"
+                onclick="updateActionPlan()"
+                type="button"
+                class="btn btn-update btn-sm px-4 d-none ms-2"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer text-center">
+      © 2026 Mahindra Group. All rights reserved.
+    </footer>
+
+    <!-- AI Suggestions Modal -->
+    <div
+      id="abbreviationOverlay"
+      class="hidden"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        overflow-y: auto;
+      "
+    >
+      <div class="abbreviation-overlay" style="margin: 20px auto">
+        <div class="abbreviation-overlay-header px-3 py-2">
+          <div>
+            <h5
+              id="abbreviationOverlayTitle"
+              style="
+                margin: 0;
+                color: #231f20;
+                font-weight: 600;
+                font-size: 15px;
+              "
+            >
+              AI Generated Action Plan
+            </h5>
+            <div
+              id="selectedMcaresItem"
+              style="margin-top: 4px; font-size: 12px; color: #6c757d"
+            ></div>
+          </div>
+          <button
+            type="button"
+            style="
+              background: none;
+              border: none;
+              font-size: 25px;
+              cursor: pointer;
+              color: #666;
+            "
+            onclick="closeAbbreviationOverlay()"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div class="abbreviation-overlay-content">
+          <div class="ai-summary-section">
+            <strong style="font-size: 12px; color: #231f20"
+              >GenAI Summary of Survey Analysis</strong
+            >
+            <p id="aiSummaryText" style="margin-top: 6px">
+              Your team shows strong performance in this dimension but needs
+              targeted improvements.
+            </p>
+          </div>
+
+          <div class="form-group-abbr" style="margin-bottom: 10px">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0px;
+              "
+            >
+              <label style="margin: 0">Define Goal</label>
+              <button
+                type="button"
+                style="
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  color: #e31837;
+                  font-size: 16px;
+                "
+                onclick="toggleEditGoal()"
+                id="goalEditBtn"
+                title="Edit Goal"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-pencil"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <div
+              id="goalDisplay"
+              class="action-plan-card-field-value"
+              style="
+                background: #f8f9fa;
+                padding: 10px;
+                border-radius: 4px;
+                border-left: 3px solid #e31837;
+              "
+            ></div>
+            <textarea
+              id="goalEdit"
+              class="action-plan-card-field-input hidden"
+              placeholder="Enter goal"
+            ></textarea>
+          </div>
+
+          <div class="suggested-plans-section">
+            <div class="suggested-plans-title">
+              GenAI Suggested Action Plans Steps
+            </div>
+            <div id="suggestedPlansContainer"></div>
+            <div style="margin-top: 12px; text-align: right">
+              <button
+                type="button"
+                class="btn btn-sm btn-secondary add-action-plan"
+                onclick="addSuggestedPlanCard()"
+              >
+                Add Action Plan
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="form-group-abbr"
+            style="margin-top: 10px; margin-bottom: 10px"
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 0px;
+              "
+            >
+              <label style="margin: 0">Desired Outcome</label>
+              <button
+                type="button"
+                style="
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  color: #e31837;
+                  font-size: 16px;
+                "
+                onclick="toggleEditOutcome()"
+                id="outcomeEditBtn"
+                title="Edit Desired Outcome"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-pencil"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <div
+              id="outcomeDisplay"
+              class="action-plan-card-field-value"
+              style="
+                background: #f8f9fa;
+                padding: 10px;
+                border-radius: 4px;
+                border-left: 3px solid #e31837;
+              "
+            ></div>
+            <textarea
+              id="outcomeEdit"
+              class="action-plan-card-field-input hidden"
+              placeholder="Enter desired outcome"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="abbreviation-overlay-footer">
+          <button
+            type="button"
+            class="btn btn-dark btn-sm btn-cancel"
+            onclick="closeAbbreviationOverlay()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-save-changes btn-sm"
+            onclick="saveAbbreviationChanges()"
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-overlays-container">
+      <div
+        id="goalSuggestionOverlay"
+        class="hidden ai-section-overlay"
+        style="display: none"
+      ></div>
+      <div
+        id="stepsSuggestionOverlay"
+        class="hidden ai-section-overlay"
+        style="display: none"
+      ></div>
+      <div
+        id="responsibilitySuggestionOverlay"
+        class="hidden ai-section-overlay"
+        style="display: none"
+      ></div>
+      <div
+        id="outcomeSuggestionOverlay"
+        class="hidden ai-section-overlay"
+        style="display: none"
+      ></div>
+    </div>
+
+    <div id="surveyToast" class="survey-toast hidden">
+      <div class="toast-content">
+        <div class="toast-icon">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="toast-body">
+          <h6 class="mb-0">Notification</h6>
+          <p class="mb-0" id="toastMessage"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery for API calls -->
+    <script src="js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      var apId = sessionStorage.getItem("apId") || "0";
+      var isAPSubmit = sessionStorage.getItem("isAPSubmit") || "";
+      var levelId = sessionStorage.getItem("levelId") || "";
+      var actionMode = sessionStorage.getItem("actionMode") || "add";
+      var editGoalId = sessionStorage.getItem("editGoalId") || "0";
+      var reviewStat = "";
+      var dimensionsData = [];
+      var itemsData = [];
+
+      function getInitEmpData() {
+        var message = "intialDataEmp";
+        var jsonDataFromServer = "";
+        var jsonDataToServer = null;
+        jsonDataFromServer = sendData(
+          message,
+          jsonDataToServer,
+          "dataController",
+        );
+        return jsonDataFromServer;
+      }
+
+      function setWelcomeName(name) {
+        const welcomeEl = document.getElementById("welcomeName");
+        if (!welcomeEl) return;
+        const safe = String(name || "").trim();
+        welcomeEl.textContent = `Welcome, ${safe || "User"} |`;
+      }
+
+      function initWelcomeEarly() {
+        try {
+          const raw = getInitEmpData(); // legacy sync call to "dataController"
+          const initEmpData = typeof raw === "string" ? JSON.parse(raw) : raw;
+
+          window.__initEmpData = initEmpData || window.__initEmpData;
+
+          const empName =
+            initEmpData?.userDetails?.employeefullname ||
+            initEmpData?.employee?.name ||
+            initEmpData?.empName ||
+            initEmpData?.userName;
+          setWelcomeName(empName);
+          const hrBtn = document.getElementById("hrSpocBtn");
+          if (hrBtn) {
+            const allowed = isSpocUser(initEmpData);
+            hrBtn.classList.toggle("hidden", !allowed);
+          }
+        } catch (e) {
+          console.warn("initWelcomeEarly: failed to init", e);
+          const hrBtn = document.getElementById("hrSpocBtn");
+          if (hrBtn) hrBtn.classList.add("hidden");
+        }
+      }
+
+      function sendData(message, data, svrUrl) {
+        var returnData = null;
+        $.ajax({
+          type: "POST",
+          url: svrUrl,
+          async: false,
+          data: {
+            message: message,
+            JDATA: data,
+          },
+          success: function (data) {
+            returnData = data;
+          },
+          error: function (xhr, ajaxOptions, throwError) {
+            console.error("API Error:", throwError);
+          },
+        });
+        return returnData;
+      }
+
+      $(document).ready(function () {
+        initFormPage();
+      });
+
+      function initFormPage() {
+        var userData = sendData("getUserDetails", null, "dataController");
+        if (userData != null && userData != "") {
+          userData = jQuery.parseJSON(userData);
+          var welcomeName = userData.employeeName || "User";
+          $("#welcomeName").text("Welcome, " + welcomeName + " |");
+        }
+
+        if (apId != "0" && apId != "") {
+          checkIsLiveReview();
+        }
+
+        loadDimensions();
+        document
+          .getElementById("modalDimension")
+          ?.addEventListener("change", showMcaresItemsTable);
+
+        if (actionMode === "edit" && editGoalId != "0") {
+          populateEditForm(editGoalId);
+        }
+      }
+
+      function checkIsLiveReview() {
+        var jsonDataToServer = "{'apId':'" + apId + "'}";
+        var message = "getAPReviewStatusType";
+        var jsonDataFromServer = sendData(
+          message,
+          jsonDataToServer,
+          "ActionPlanController",
+        );
+
+        if (
+          jsonDataFromServer == "Not_started" ||
+          jsonDataFromServer == "Incomplete"
+        ) {
+          reviewStat = jsonDataFromServer;
+        } else if (jsonDataFromServer == "Completed") {
+          reviewStat = jsonDataFromServer;
+          disableFormForCompletedReview();
+        } else if (
+          jsonDataFromServer == "NO_AP" ||
+          jsonDataFromServer == "None"
+        ) {
+          reviewStat = jsonDataFromServer;
+        } else {
+          reviewStat = jsonDataFromServer;
+        }
+      }
+
+      function disableFormForCompletedReview() {
+        $("#planForm input, #planForm select, #planForm textarea").prop(
+          "disabled",
+          true,
+        );
+        $("#addBtn, #updateBtn")
+          .prop("disabled", true)
+          .addClass("btn-secondary")
+          .removeClass("btn-danger btn-primary");
+      }
+
+      function loadDimensions() {
+        var jsonDataFromServer = sendData(
+          "getNomenclature",
+          null,
+          "ActionPlanController",
+        );
+        if (jsonDataFromServer != null && jsonDataFromServer != "") {
+          var aData = jsonDataFromServer.replace(/'/g, '"');
+          var allDimensions = jQuery.parseJSON(aData);
+
+          dimensionsData = allDimensions.filter(function (obj) {
+            return obj.kpiId >= 3 && obj.kpiId <= 7;
+          });
+
+          var select = document.getElementById("modalDimension");
+          var firstOption = select.options[0];
+          select.innerHTML = "";
+          select.appendChild(firstOption);
+
+          $.each(dimensionsData, function (idx, obj) {
+            var option = document.createElement("option");
+            option.value = obj.kpiId;
+            option.text = obj.kpiTitle;
+            option.setAttribute("data-title", obj.kpiTitle);
+            select.appendChild(option);
+          });
+        }
+      }
+
+      function loadItemsForDimension(dimensionId, dimensionTitle) {
+        var jsonDataFromServer = sendData(
+          "getAPItems",
+          dimensionId,
+          "ActionPlanController",
+        );
+        if (jsonDataFromServer != null && jsonDataFromServer != "") {
+          itemsData = jQuery.parseJSON(jsonDataFromServer);
+          return itemsData;
+        }
+        return [];
+      }
+
+      function getCurrentScoreForItem(itemId) {
+        var userData = sendData("getUserDetails", null, "dataController");
+        if (userData != null && userData != "") {
+          userData = jQuery.parseJSON(userData);
+          var managerId = userData.employeeId;
+          var sectorId = userData.sectorId;
+          var fYear = userData.year;
+          var cycle = userData.cycle;
+
+          var jsonDataToServer =
+            "{'itemId':'" +
+            itemId +
+            "','managerId':'" +
+            managerId +
+            "','sectorId':'" +
+            sectorId +
+            "','fYear':'" +
+            fYear +
+            "','cycle':'" +
+            cycle +
+            "','levelId':'" +
+            levelId +
+            "'}";
+          var score = sendData(
+            "getCurrentScore",
+            jsonDataToServer,
+            "ActionPlanController",
+          );
+          if (score) {
+            score = score.replace(/"/g, "");
+            return score;
+          }
+        }
+        return "";
+      }
+
+      function populateEditForm(goalId) {
+        var jsonDataToServer = "{'goalId':'" + goalId + "'}";
+        var jsonDataFromServer = sendData(
+          "getGoalDetails",
+          jsonDataToServer,
+          "ActionPlanController",
+        );
+        if (jsonDataFromServer != null && jsonDataFromServer != "") {
+          var jdata = jQuery.parseJSON(jsonDataFromServer);
+
+          $("#modalDimension").val(jdata.dimensionId);
+          showMcaresItemsTable();
+
+          setTimeout(function () {
+            $("input[name='mcaresItem'][value='" + jdata.itemId + "']").prop(
+              "checked",
+              true,
+            );
+            selectMcaresItem(jdata.itemDesc, jdata.currYearScore);
+          }, 500);
+
+          $("#modalGoal").val(jdata.action_goal);
+          $("#modalOutcome").val(jdata.desiredOutcome);
+
+          populateActionStepsFromData(jdata.goal_item_map);
+
+          $("#addBtn").addClass("d-none");
+          $("#updateBtn").removeClass("d-none");
+        }
+      }
+
+      function populateActionStepsFromData(steps) {
+        var container = document.getElementById("actionStepsContainer");
+        container.innerHTML = "";
+
+        $.each(steps, function (idx, step) {
+          var dArr = step.completionDate
+            ? step.completionDate.split("-")
+            : ["", "", ""];
+          var dateValue =
+            dArr.length === 3 ? dArr[0] + "-" + dArr[1] + "-" + dArr[2] : "";
+
+          var newRow = document.createElement("div");
+          newRow.className = "action-step-row";
+          newRow.setAttribute("data-row-index", idx);
+          newRow.innerHTML = createActionStepRowHTML(
+            idx,
+            step.actionSteps,
+            step.resourseRequired,
+            step.responsibility,
+            dateValue,
+          );
+          container.appendChild(newRow);
+        });
+      }
+
+      function createActionStepRowHTML(
+        index,
+        steps,
+        resources,
+        responsibility,
+        date,
+      ) {
+        return `
+        <div class="step-header" onclick="toggleActionStepRow(${index})">
+          <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+            <div class="step-number">${index + 1}</div>
+            <div class="step-title">Action Step ${index + 1}</div>
+          </div>
+          <div class="step-toggle"><i class="fa fa-chevron-down"></i></div>
+        </div>
+        <div class="step-content expanded">
+          <div class="button-add-delete">
+            <button type="button" class="btn btn-sm" onclick="removeActionStepRow(${index})" title="Delete">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"></path>
+                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"></path>
+              </svg>
+            </button>
+            <button type="button" class="btn btn-sm" onclick="addActionStepRow()" title="Add">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="row mb-2 g-2">
+            <div class="col-md-3">
+              <label class="form-label small text-secondary">Action Steps</label>
+              <textarea class="form-control form-control-sm action-step-input" placeholder="Enter steps..." rows="2">${steps || ""}</textarea>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small text-secondary">Resources</label>
+              <input type="text" class="form-control form-control-sm resource-input" placeholder="Budget, etc..." value="${resources || ""}" />
+            </div>
+            <div class="col-md-3">
+              <loabel class="form-label small text-secondary">Responsibility</label>
+              <input type="text" class="form-control form-control-sm responsibility-input" placeholder="Person/Team" value="${responsibility || ""}" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small text-secondary">Completion Date</label>
+              <input type="date" class="form-control form-control-sm completion-date-input" value="${date || ""}" />
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      const aiSuggestions = {
+        Career: {
+          goals: [
+            "Develop a personalized career development plan aligned with organizational goals",
+            "Complete advanced certifications to enhance professional skills",
+            "Mentor junior team members to build leadership capabilities",
+            "Identify and pursue stretch assignments for career growth",
+          ],
+          steps: [
+            "Discuss career aspirations with manager in one-on-one meetings",
+            "Enroll in relevant training programs and certifications",
+            "Seek mentorship from senior leaders in the organization",
+            "Document progress and achievements regularly",
+            "Review and update development plan quarterly",
+          ],
+          responsibility: [
+            "Employee with Manager's support",
+            "HR Department & Learning Team",
+            "Direct Manager & Mentors",
+            "Employee & Team Lead",
+          ],
+          outcomes: [
+            "Improved career clarity and actionable growth roadmap",
+            "Enhanced skills and certifications acquired",
+            "Stronger leadership and mentoring capabilities",
+            "Increased internal mobility and promotion readiness",
+          ],
+        },
+        Alignment: {
+          goals: [
+            "Align individual objectives with organizational strategy",
+            "Enhance understanding of team responsibilities",
+            "Improve cross-functional collaboration",
+            "Strengthen communication of organizational goals",
+          ],
+          steps: [
+            "Attend alignment workshops and training sessions",
+            "Participate in goal-setting sessions with team leads",
+            "Share organizational goals with team members",
+            "Create accountability mechanisms for alignment",
+            "Review alignment quarterly",
+          ],
+          responsibility: [
+            "HR & Management Team",
+            "Department Heads",
+            "Team Leads & Managers",
+            "All Employees",
+          ],
+          outcomes: [
+            "100% alignment between individual and organizational goals",
+            "Improved team coordination and efficiency",
+            "Enhanced understanding of organizational direction",
+            "Better performance against strategic objectives",
+          ],
+        },
+        Recognition: {
+          goals: [
+            "Implement a robust recognition and rewards program",
+            "Foster a culture of appreciation and acknowledgment",
+            "Recognize both individual and team achievements",
+            "Build employee engagement through recognition",
+          ],
+          steps: [
+            "Define recognition criteria and categories",
+            "Communicate recognition program to all employees",
+            "Train managers on providing effective recognition",
+            "Establish peer recognition mechanisms",
+            "Review and celebrate achievements monthly",
+          ],
+          responsibility: [
+            "HR Department",
+            "Senior Management",
+            "Direct Managers",
+            "Peer Employees",
+          ],
+          outcomes: [
+            "80% employee participation in recognition activities",
+            "Improved employee satisfaction and morale",
+            "Enhanced retention of high performers",
+            "Stronger organizational culture",
+          ],
+        },
+        Empowerment: {
+          goals: [
+            "Foster autonomous decision-making within teams",
+            "Enhance communication channels for transparent information flow",
+            "Create collaborative work environment for innovation",
+            "Build accountability culture with clear ownership",
+          ],
+          steps: [
+            "Delegate decision-making authority to team members",
+            "Establish open-door policy for communication",
+            "Create cross-functional project teams",
+            "Define clear roles and accountability metrics",
+            "Conduct regular feedback sessions",
+          ],
+          responsibility: [
+            "Direct Managers",
+            "Team Leads",
+            "HR Department",
+            "All Employees",
+          ],
+          outcomes: [
+            "Increased employee autonomy and ownership",
+            "Improved innovation and creative problem-solving",
+            "Enhanced team collaboration and trust",
+            "Higher employee engagement scores",
+          ],
+        },
+        Strive: {
+          goals: [
+            "Promote work-life balance initiatives",
+            "Enhance employee wellness programs",
+            "Drive sustainability practices in workplace",
+            "Ensure leadership walks the talk on values",
+          ],
+          steps: [
+            "Implement flexible work arrangements",
+            "Launch wellness challenges and health programs",
+            "Reduce environmental footprint through green initiatives",
+            "Conduct leadership effectiveness reviews",
+            "Celebrate sustainability achievements",
+          ],
+          responsibility: [
+            "HR & Wellness Team",
+            "Senior Leadership",
+            "Sustainability Committee",
+            "All Employees",
+          ],
+          outcomes: [
+            "Improved work-life balance satisfaction",
+            "Reduced employee stress and burnout",
+            "Enhanced sustainability metrics",
+            "Stronger leadership credibility",
+          ],
+        },
+      };
+
+      let editRowGroup = null;
+
+      function goBackToMainPage() {
+        window.location.href = "action_planning.html";
+      }
+
+      function showMcaresItemsTable() {
+        const dimensionSelect = document.getElementById("modalDimension");
+        const dimension = dimensionSelect.value;
+        const dimensionTitle =
+          dimensionSelect.options[dimensionSelect.selectedIndex].getAttribute(
+            "data-title",
+          ) || dimensionSelect.options[dimensionSelect.selectedIndex].text;
+        const mcaresItemsList = document.getElementById("mcaresItemsList");
+
+        const itemsFromAPI = loadItemsForDimension(dimension, dimensionTitle);
+
+        mcaresItemsList.innerHTML = "";
+
+        if (!itemsFromAPI || itemsFromAPI.length === 0) {
+          mcaresItemsList.innerHTML =
+            '<div class="text-center text-muted small p-1">No items available</div>';
+          return;
+        }
+
+        const scoredItems = itemsFromAPI
+          .map((item) => {
+            const score = getCurrentScoreForItem(item.questionId) || "N/A";
+            return {
+              item,
+              score,
+              numericScore: parseScoreValue(score),
+            };
+          })
+          .sort((a, b) => a.numericScore - b.numericScore);
+
+        scoredItems.forEach(({ item, score }) => {
+          const label = document.createElement("label");
+          label.className =
+            "d-flex align-items-center gap-2 p-2 cursor-pointer";
+          label.style.borderBottom = "1px solid #e9ecef";
+          label.style.justifyContent = "space-between";
+          label.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+            <input type="radio" name="mcaresItem" value="${item.questionId}"
+                   data-item="${item.questionText}" data-score="${score}"
+                   onchange="selectMcaresItem('${item.questionText.replace(/'/g, "\\'")}', '${score}')">
+            <small class="d-block">${item.questionText}</small>
+          </div>
+          <small class="text-muted" style="text-align: right; white-space: nowrap; margin-left: 8px;">Score: ${score}</small>
+        `;
+          mcaresItemsList.appendChild(label);
+        });
+
+        const toggleBtn = document.getElementById("toggleMcaresBtn");
+        if (toggleBtn) {
+          toggleBtn.style.display = "inline-block";
+        }
+
+        mcaresItemsList.style.maxHeight = "200px";
+        if (document.getElementById("toggleMcaresIcon")) {
+          document.getElementById("toggleMcaresIcon").className =
+            "fa fa-chevron-down";
+          document.getElementById("toggleMcaresText").textContent = "Collapse";
+        }
+      }
+
+      function selectMcaresItem(itemText, score) {
+        document.getElementById("modalItem").value = itemText;
+        enableAbbr();
+      }
+
+      let activeAISuggestionTarget = null;
+
+      let suggestedPlanCounter = 0;
+      function parseScoreValue(score) {
+        const numericScore = parseFloat(score);
+        return Number.isFinite(numericScore)
+          ? numericScore
+          : Number.POSITIVE_INFINITY;
+      }
+
+      function createSuggestedPlanCard(plan) {
+        plan = plan || {};
+        const planId = suggestedPlanCounter++;
+        const title = plan.title || "New Suggested Action Plan";
+        const description = plan.description || "";
+        const resources = plan.resources || "";
+        const responsibility = plan.responsibility || "";
+        const dueDate = plan.dueDate || "";
+
+        const card = document.createElement("div");
+        card.className = "action-plan-card";
+        card.setAttribute("data-edit-mode", "false");
+        card.setAttribute("data-plan-id", planId);
+
+        card.innerHTML = `
+            <div class="action-plan-card-header">
+              <div class="action-plan-card-header-left">
+                <span class="step-number" id="step-number-${planId}">1</span>
+                <div class="action-plan-card-title" id="plan-title-display-${planId}">${title}</div>
+                <input type="text" class="action-plan-card-field-input hidden" id="plan-title-input-${planId}" value="${title}" style="width:100%; margin-top:4px;" />
+              </div>
+              <div class="action-plan-card-icons">
+                <button class="btn-edit-icon" onclick="toggleEditSuggestedPlan(${planId}, event)" title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path></svg></button>
+                <button class="btn-edit-icon btn-delete-icon" onclick="removeSuggestedPlan(${planId}, event)" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"></path><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"></path></svg></button>
+              </div>
+            </div>
+
+            <div class="action-plan-card-fields-container" id="plan-fields-${planId}">
+              <div class="action-plan-card-field">
+                <label class="action-plan-card-field-label">Action Steps Description</label>
+                <div class="action-plan-card-field-value" id="plan-desc-display-${planId}">${description}</div>
+                <textarea class="action-plan-card-field-input hidden" id="plan-desc-input-${planId}" style="min-height: 60px;">${description}</textarea>
+              </div>
+
+              <div class="action-plan-card-fields-row">
+                <div class="action-plan-card-field">
+                  <label class="action-plan-card-field-label">Resources Required</label>
+                  <div class="action-plan-card-field-value" id="plan-owner-display-${planId}">${resources}</div>
+                  <input type="text" class="action-plan-card-field-input hidden" id="plan-owner-input-${planId}" value="${resources}" />
+                </div>
+
+                <div class="action-plan-card-field">
+                  <label class="action-plan-card-field-label">Responsibility</label>
+                  <div class="action-plan-card-field-value" id="plan-success-display-${planId}">${responsibility}</div>
+                  <textarea class="action-plan-card-field-input hidden" id="plan-success-input-${planId}" style="min-height: 40px;">${responsibility}</textarea>
+                </div>
+
+                <div class="action-plan-card-field">
+                  <label class="action-plan-card-field-label">Completion Date</label>
+                  <div class="action-plan-card-field-value" id="plan-due-display-${planId}">${dueDate}</div>
+                  <input type="date" class="action-plan-card-field-input hidden" id="plan-due-input-${planId}" value="${dueDate}" />
+                </div>
+              </div>
+            </div>
+          `;
+
+        return card;
+      }
+
+      function addSuggestedPlanCard() {
+        appendSuggestedPlanCard();
+        updateStepNumbers();
+        const container = document.getElementById("suggestedPlansContainer");
+        const cards = container.querySelectorAll(".action-plan-card");
+        if (cards.length > 0) {
+          const lastCard = cards[cards.length - 1];
+          const planId = lastCard.getAttribute("data-plan-id");
+          toggleEditSuggestedPlan(planId, null);
+        }
+      }
+
+      function appendSuggestedPlanCard(plan) {
+        const container = document.getElementById("suggestedPlansContainer");
+        if (!container) return;
+        if (
+          container.innerHTML.trim() ===
+          '<div class="text-center text-muted small p-1">No suggested plans available.</div>'
+        ) {
+          container.innerHTML = "";
+        }
+        const card = createSuggestedPlanCard(plan);
+        container.appendChild(card);
+      }
+
+      function toggleMcaresItems() {
+        const mcaresItemsList = document.getElementById("mcaresItemsList");
+        const isCollapsed = mcaresItemsList.style.maxHeight === "50px";
+        mcaresItemsList.style.maxHeight = isCollapsed ? "200px" : "50px";
+        document.getElementById("toggleMcaresIcon").className = isCollapsed
+          ? "fa fa-chevron-down"
+          : "fa fa-chevron-up";
+        document.getElementById("toggleMcaresText").textContent = isCollapsed
+          ? "Collapse"
+          : "Expand";
+      }
+
+      function enableAbbr() {
+        document.getElementById("abbrBtn").classList.remove("hidden");
+      }
+
+      function showAbbreviationOverlay() {
+        const dimSelect = document.getElementById("modalDimension");
+        const dim =
+          dimSelect.options[dimSelect.selectedIndex]?.getAttribute(
+            "data-title",
+          ) ||
+          dimSelect.options[dimSelect.selectedIndex]?.text ||
+          "";
+        const goal = document.getElementById("modalGoal").value;
+        const outcome = document.getElementById("modalOutcome").value;
+
+        const suggestedGoal = goal || getAISuggestedGoal(dim);
+        const suggestedOutcome = outcome || getAISuggestedOutcome(dim);
+        const selectedRadio = document.querySelector(
+          "input[name='mcaresItem']:checked",
+        );
+        const selectedItemText = selectedRadio
+          ? selectedRadio.getAttribute("data-item")
+          : "No item selected";
+
+        document.getElementById("abbreviationOverlayTitle").innerText =
+          `AI Generated Action Plan for ${dim}`;
+        document.getElementById("selectedMcaresItem").innerHTML =
+          selectedItemText
+            ? `<span style="color: #4d4c4c;">MCARES Item -</span> ${selectedItemText}`
+            : "";
+
+        document.getElementById("goalDisplay").innerText = suggestedGoal;
+        document.getElementById("goalEdit").value = goal || "";
+
+        document.getElementById("outcomeDisplay").innerText = suggestedOutcome;
+        document.getElementById("outcomeEdit").value = outcome || "";
+
+        document.getElementById("aiSummaryText").innerText =
+          `Your team shows strong ${dim} and alignment with values, but needs targeted improvements in ${dim.toLowerCase()}, leadership credibility and career growth.`;
+
+        document.getElementById("goalEdit").classList.add("hidden");
+        document.getElementById("goalDisplay").classList.remove("hidden");
+        document.getElementById("goalEditBtn").innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path></svg>';
+
+        document.getElementById("outcomeEdit").classList.add("hidden");
+        document.getElementById("outcomeDisplay").classList.remove("hidden");
+        document.getElementById("outcomeEditBtn").innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path></svg>';
+
+        populateSuggestedPlans(dim);
+
+        const overlay = document.getElementById("abbreviationOverlay");
+        overlay.classList.remove("hidden");
+        overlay.style.display = "flex";
+      }
+
+      function toggleEditGoal() {
+        const display = document.getElementById("goalDisplay");
+        const input = document.getElementById("goalEdit");
+        const btn = document.getElementById("goalEditBtn");
+
+        if (input.classList.contains("hidden")) {
+          input.value = display.innerText;
+          display.classList.add("hidden");
+          input.classList.remove("hidden");
+          btn.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/></svg>';
+        } else {
+          display.innerText = input.value;
+          input.classList.add("hidden");
+          display.classList.remove("hidden");
+          btn.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path></svg>';
+        }
+      }
+
+      function toggleEditOutcome() {
+        const display = document.getElementById("outcomeDisplay");
+        const input = document.getElementById("outcomeEdit");
+        const btn = document.getElementById("outcomeEditBtn");
+
+        if (input.classList.contains("hidden")) {
+          input.value = display.innerText;
+          display.classList.add("hidden");
+          input.classList.remove("hidden");
+          btn.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/></svg>';
+        } else {
+          display.innerText = input.value;
+          input.classList.add("hidden");
+          display.classList.remove("hidden");
+          btn.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path></svg>';
+        }
+      }
+
+      function getAISuggestedGoal(dimension) {
+        const goalSuggestions = {
+          "Alignment with Values":
+            "Establish a clear value-based culture and ensure 100% team alignment with organizational core values through structured monthly touchpoints and leadership modeling.",
+          Engagement:
+            "Increase employee engagement scores by 25% through enhanced communication, recognition programs, and career development initiatives across all departments.",
+          "Leadership Credibility":
+            "Build stronger leadership credibility through transparent decision-making, consistent follow-through on commitments, and enhanced stakeholder communication.",
+          "Career Growth":
+            "Create a comprehensive career development framework with clear progression paths, mentorship programs, and skill development opportunities for all employees.",
+          Inclusivity:
+            "Foster an inclusive workplace culture where all employees feel valued, heard, and empowered to contribute their unique perspectives and talents.",
+          Performance:
+            "Drive organizational performance excellence by setting clear KPIs, implementing accountability systems, and providing continuous feedback and coaching.",
+        };
+        return (
+          goalSuggestions[dimension] ||
+          `Improve ${dimension} and drive organizational excellence in this critical area.`
+        );
+      }
+
+      function getAISuggestedOutcome(dimension) {
+        const outcomeSuggestions = {
+          "Alignment with Values":
+            "Team demonstrates measurable alignment with organizational values, evidenced by improved survey scores, reduced attrition, and increased employee advocacy.",
+          Engagement:
+            "Sustained improvement in employee engagement metrics with higher participation in team initiatives, increased retention, and improved team collaboration.",
+          "Leadership Credibility":
+            "Enhanced trust in leadership with measurable improvements in credibility scores, improved team morale, and stronger organizational commitment.",
+          "Career Growth":
+            "Clear career pathways established with improved employee retention, higher engagement in development programs, and successful internal promotions.",
+          Inclusivity:
+            "All employees report feeling included and valued, with measurable diversity in leadership, representation in decision-making, and inclusive culture metrics.",
+          Performance:
+            "Sustained performance improvements with increased productivity, quality metrics, and financial results aligned with organizational objectives.",
+        };
+        return (
+          outcomeSuggestions[dimension] ||
+          `Achieve measurable improvements in ${dimension} that positively impact organizational success and employee satisfaction.`
+        );
+      }
+
+      function populateSuggestedPlans(dimension) {
+        suggestedPlanCounter = 0;
+        const container = document.getElementById("suggestedPlansContainer");
+        container.innerHTML = "";
+
+        const suggestedPlans = [
+          {
+            title: `Launch Monthly ${dimension} Ritual`,
+            description: `Introduce a monthly ${dimension.toLowerCase()} segment in team meetings to celebrate achievements and drive ${dimension.toLowerCase()} culture.`,
+            resources: "Team Lead, Meeting Schedule",
+            responsibility: "HR Team Lead",
+            dueDate: "2026-05-31",
+            successMeasure: `Improve ${dimension.toLowerCase()} score by 20%`,
+          },
+          {
+            title: `${dimension} Improvement Workshop`,
+            description: `Implement a targeted workshop to enhance team engagement and ${dimension.toLowerCase()} initiatives with hands-on activities.`,
+            resources: "Training Budget, Facilitator",
+            responsibility: "HR & Training Team",
+            dueDate: "2026-06-15",
+            successMeasure: "80% team participation achieved",
+          },
+          {
+            title: `Conduct ${dimension} Growth Sessions`,
+            description: `Hold one-on-one sessions to discuss individual ${dimension.toLowerCase()} goals and career growth opportunities.`,
+            resources: "Manager Time, Development Plan Template",
+            responsibility: "Department Heads & Managers",
+            dueDate: "2026-06-30",
+            successMeasure: "Improved team alignment and morale",
+          },
+        ];
+
+        suggestedPlans.forEach((plan) => {
+          appendSuggestedPlanCard(plan);
+        });
+        updateStepNumbers();
+      }
+
+      function toggleEditSuggestedPlan(index, event) {
+        if (event) event.stopPropagation();
+        const card = document.querySelector(`[data-plan-id="${index}"]`);
+        if (!card) return;
+        const isEditMode = card.getAttribute("data-edit-mode") === "true";
+
+        const fields = [
+          `plan-title-display-${index}`,
+          `plan-desc-display-${index}`,
+          `plan-owner-display-${index}`,
+          `plan-start-display-${index}`,
+          `plan-due-display-${index}`,
+          `plan-review-display-${index}`,
+          `plan-priority-display-${index}`,
+          `plan-success-display-${index}`,
+        ];
+
+        if (isEditMode) {
+          fields.forEach((id) => {
+            const display = document.getElementById(id);
+            const input = document.getElementById(
+              id.replace("display", "input"),
+            );
+            if (display && input) {
+              display.innerText =
+                input.type === "date" ? input.value : input.value;
+              display.classList.remove("hidden");
+              input.classList.add("hidden");
+            }
+          });
+          card.setAttribute("data-edit-mode", "false");
+
+          const editBtn = card.querySelector(".btn-edit-icon");
+          editBtn.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"></path></svg>';
+        } else {
+          fields.forEach((id) => {
+            const display = document.getElementById(id);
+            const input = document.getElementById(
+              id.replace("display", "input"),
+            );
+            if (display && input) {
+              input.value = display.innerText;
+              display.classList.add("hidden");
+              input.classList.remove("hidden");
+            }
+          });
+          card.setAttribute("data-edit-mode", "true");
+
+          const editBtn = card.querySelector(".btn-edit-icon");
+          editBtn.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"></path></svg>';
+        }
+      }
+
+      function removeSuggestedPlan(index, event) {
+        if (event) event.stopPropagation();
+        const card = document.querySelector(`[data-plan-id="${index}"]`);
+        if (!card) return;
+        card.remove();
+        const container = document.getElementById("suggestedPlansContainer");
+        if (
+          container &&
+          container.querySelectorAll(".action-plan-card").length === 0
+        ) {
+          container.innerHTML =
+            '<div class="text-center text-muted small p-1">No suggested plans available.</div>';
+        } else {
+          updateStepNumbers();
+        }
+      }
+
+      function updateStepNumbers() {
+        const container = document.getElementById("suggestedPlansContainer");
+        if (!container) return;
+        const cards = container.querySelectorAll(".action-plan-card");
+        cards.forEach((card, index) => {
+          const planId = card.getAttribute("data-plan-id");
+          const stepSpan = document.getElementById(`step-number-${planId}`);
+          if (stepSpan) {
+            stepSpan.textContent = `${index + 1} `;
+          }
+        });
+      }
+
+      function acceptSuggestedPlan(index, title, event) {
+        if (event) event.stopPropagation();
+        showToast("Plan accepted!", "success");
+      }
+
+      function rejectSuggestedPlan(index, event) {
+        if (event) event.stopPropagation();
+        showToast("Plan rejected.", "info");
+      }
+
+      function closeAbbreviationOverlay() {
+        const overlay = document.getElementById("abbreviationOverlay");
+        overlay.classList.add("hidden");
+        overlay.style.display = "none";
+      }
+
+      function saveAbbreviationChanges() {
+        const goalDisplay = document.getElementById("goalDisplay");
+        const goalEdit = document.getElementById("goalEdit");
+        const outcomeDisplay = document.getElementById("outcomeDisplay");
+        const outcomeEdit = document.getElementById("outcomeEdit");
+
+        const goal = goalEdit.classList.contains("hidden")
+          ? goalDisplay.innerText
+          : goalEdit.value;
+        const outcome = outcomeEdit.classList.contains("hidden")
+          ? outcomeDisplay.innerText
+          : outcomeEdit.value;
+
+        if (!goal || goal.trim() === "") {
+          showToast("Please define a goal", "warning");
+          return;
+        }
+
+        const dimSelect = document.getElementById("modalDimension");
+        const dim = dimSelect.value;
+        const selectedRadio = document.querySelector(
+          "input[name='mcaresItem']:checked",
+        );
+        const itemId = selectedRadio ? selectedRadio.value : "";
+        const score = selectedRadio
+          ? selectedRadio.getAttribute("data-score")
+          : "";
+
+        if (!dim || dim === "0") {
+          showToast("Please select a MCARES Dimension", "warning");
+          return;
+        }
+        if (!itemId) {
+          showToast("Please select a MCARES Item", "warning");
+          return;
+        }
+        if (!apId || apId === "0") {
+          showToast(
+            "Invalid action plan ID. Please refresh the page and try again.",
+            "warning",
+          );
+          return;
+        }
+
+        const goalItemMapArray = extractActionStepsFromSuggestedPlans();
+        console.log("Extracted goalItemMapArray:", goalItemMapArray);
+
+        if (goalItemMapArray.length === 0) {
+          showToast("No action steps found in the suggested plans", "warning");
+          return;
+        }
+
+        var formData = {
+          action_manager_map_id: apId,
+          dimensionId: dim,
+          itemId: itemId,
+          currentYearScore: score,
+          desiredOutcome: outcome,
+          action_goal_map: [
+            {
+              action_goal: goal,
+              goal_item_map: goalItemMapArray,
+            },
+          ],
+        };
+
+        var jsonDataToServer = JSON.stringify(formData);
+        console.log("Sending data to API:", formData);
+        console.log("JSON data:", jsonDataToServer);
+
+        var response = sendData(
+          "saveActionGoal",
+          jsonDataToServer,
+          "ActionPlanController",
+        );
+
+        console.log("API Response:", response);
+
+        if (response != null && response != "" && response != "null") {
+          if (response.indexOf("success") >= 0) {
+            apId = response.split("_")[1] || apId;
+            sessionStorage.setItem("apId", apId);
+          }
+
+          showToast("Action plan saved successfully!", "success");
+          closeAbbreviationOverlay();
+          sessionStorage.setItem("actionMode", "view");
+          setTimeout(function () {
+            window.location.href = "action_planning_submitted.html";
+          }, 1500);
+        } else {
+          showToast("Failed to save action plan. Please try again.", "error");
+        }
+      }
+
+      function extractActionStepsFromSuggestedPlans() {
+        const container = document.getElementById("suggestedPlansContainer");
+        const goalItemMapArray = [];
+
+        if (!container) return goalItemMapArray;
+
+        const cards = container.querySelectorAll(".action-plan-card");
+
+        cards.forEach((card) => {
+          const planId = card.getAttribute("data-plan-id");
+          const descDisplay = card.querySelector(
+            `#plan-desc-display-${planId}`,
+          );
+          const descInput = card.querySelector(`#plan-desc-input-${planId}`);
+          const actionSteps =
+            descInput && !descInput.classList.contains("hidden")
+              ? descInput.value
+              : descDisplay
+                ? descDisplay.innerText
+                : "";
+
+          const resourcesDisplay = card.querySelector(
+            `#plan-owner-display-${planId}`,
+          );
+          const resourcesInput = card.querySelector(
+            `#plan-owner-input-${planId}`,
+          );
+          const resourcesRequired =
+            resourcesInput && !resourcesInput.classList.contains("hidden")
+              ? resourcesInput.value
+              : resourcesDisplay
+                ? resourcesDisplay.innerText
+                : "";
+
+          const responsibilityDisplay = card.querySelector(
+            `#plan-success-display-${planId}`,
+          );
+          const responsibilityInput = card.querySelector(
+            `#plan-success-input-${planId}`,
+          );
+          const responsibility =
+            responsibilityInput &&
+            !responsibilityInput.classList.contains("hidden")
+              ? responsibilityInput.value
+              : responsibilityDisplay
+                ? responsibilityDisplay.innerText
+                : "";
+
+          const dueDisplay = card.querySelector(`#plan-due-display-${planId}`);
+          const dueInput = card.querySelector(`#plan-due-input-${planId}`);
+          let dueDate =
+            dueInput && !dueInput.classList.contains("hidden")
+              ? dueInput.value
+              : dueDisplay
+                ? dueDisplay.innerText
+                : "";
+
+          dueDate = formatDateForAPI(dueDate);
+
+          if (actionSteps && actionSteps.trim() !== "") {
+            goalItemMapArray.push({
+              actionSteps: actionSteps,
+              resourseRequired: resourcesRequired,
+              responsibility: responsibility,
+              completionDate: dueDate,
+            });
+          }
+        });
+
+        return goalItemMapArray;
+      }
+
+      function populateActionStepsFromAISuggestedPlans() {
+        const container = document.getElementById("suggestedPlansContainer");
+        if (!container) return;
+
+        const cards = container.querySelectorAll(".action-plan-card");
+        const actionStepsContainer = document.getElementById(
+          "actionStepsContainer",
+        );
+
+        actionStepsContainer.innerHTML = "";
+
+        let stepIndex = 0;
+
+        cards.forEach((card) => {
+          const planId = card.getAttribute("data-plan-id");
+          const isEditMode = card.getAttribute("data-edit-mode") === "true";
+
+          const descDisplay = card.querySelector(
+            `#plan-desc-display-${planId}`,
+          );
+          const descInput = card.querySelector(`#plan-desc-input-${planId}`);
+          const actionSteps =
+            descInput && !descInput.classList.contains("hidden")
+              ? descInput.value
+              : descDisplay
+                ? descDisplay.innerText
+                : "";
+
+          const resourcesDisplay = card.querySelector(
+            `#plan-owner-display-${planId}`,
+          );
+          const resourcesInput = card.querySelector(
+            `#plan-owner-input-${planId}`,
+          );
+          const resourcesRequired =
+            resourcesInput && !resourcesInput.classList.contains("hidden")
+              ? resourcesInput.value
+              : resourcesDisplay
+                ? resourcesDisplay.innerText
+                : "";
+
+          const responsibilityDisplay = card.querySelector(
+            `#plan-success-display-${planId}`,
+          );
+          const responsibilityInput = card.querySelector(
+            `#plan-success-input-${planId}`,
+          );
+          const responsibility =
+            responsibilityInput &&
+            !responsibilityInput.classList.contains("hidden")
+              ? responsibilityInput.value
+              : responsibilityDisplay
+                ? responsibilityDisplay.innerText
+                : "";
+
+          const dueDisplay = card.querySelector(`#plan-due-display-${planId}`);
+          const dueInput = card.querySelector(`#plan-due-input-${planId}`);
+          const dueDate =
+            dueInput && !dueInput.classList.contains("hidden")
+              ? dueInput.value
+              : dueDisplay
+                ? dueDisplay.innerText
+                : "";
+
+          const formattedDate = dueDate ? formatDateForForm(dueDate) : "";
+
+          if (actionSteps && actionSteps.trim() !== "") {
+            const newRow = document.createElement("div");
+            newRow.className = "action-step-row";
+            newRow.setAttribute("data-row-index", stepIndex);
+            newRow.innerHTML = createActionStepRowHTML(
+              stepIndex,
+              actionSteps,
+              resourcesRequired,
+              responsibility,
+              formattedDate,
+            );
+            actionStepsContainer.appendChild(newRow);
+            stepIndex++;
+          }
+        });
+
+        if (stepIndex === 0) {
+          const newRow = document.createElement("div");
+          newRow.className = "action-step-row";
+          newRow.setAttribute("data-row-index", 0);
+          newRow.innerHTML = createActionStepRowHTML(0, "", "", "", "");
+          actionStepsContainer.appendChild(newRow);
+        }
+      }
+
+      function formatDateForForm(dateStr) {
+        if (!dateStr) return "";
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+          return dateStr;
+        }
+
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+          const parts = dateStr.split("/");
+          if (parts.length === 3) {
+            return parts[2] + "-" + parts[1] + "-" + parts[0];
+          }
+        }
+
+        return dateStr;
+      }
+
+      function getAISuggestionsForDimension(dimensionTitle) {
+        if (!dimensionTitle) {
+          return null;
+        }
+
+        const normalized = dimensionTitle.trim();
+        if (aiSuggestions[normalized]) {
+          return aiSuggestions[normalized];
+        }
+
+        const lower = normalized.toLowerCase();
+        for (const key in aiSuggestions) {
+          if (key.toLowerCase() === lower) {
+            return aiSuggestions[key];
+          }
+        }
+
+        const singular = normalized.replace(/s$/i, "");
+        if (aiSuggestions[singular]) {
+          return aiSuggestions[singular];
+        }
+
+        return null;
+      }
+
+      function toggleAISideDiv(type, element, event) {
+        event = event || window.event;
+        const dimensionSelect = document.getElementById("modalDimension");
+        const dimensionTitle =
+          dimensionSelect.options[dimensionSelect.selectedIndex]?.getAttribute(
+            "data-title",
+          ) ||
+          dimensionSelect.options[dimensionSelect.selectedIndex]?.text ||
+          "";
+
+        if (!dimensionTitle || dimensionTitle === "Select Dimension") {
+          return;
+        }
+
+        const dimSuggestions = getAISuggestionsForDimension(dimensionTitle);
+        if (!dimSuggestions) {
+          return;
+        }
+
+        let suggestions = [];
+        let titleText = "AI Suggestions";
+        let overlayId = "";
+
+        if (type === "goal") {
+          suggestions = dimSuggestions.goals || [];
+          titleText = "Suggested Goals";
+          overlayId = "goalSuggestionOverlay";
+        } else if (type === "steps") {
+          suggestions = dimSuggestions.steps || [];
+          titleText = "Suggested Action Steps";
+          overlayId = "stepsSuggestionOverlay";
+        } else if (type === "responsibility") {
+          suggestions = dimSuggestions.responsibility || [];
+          titleText = "Suggested Responsibility";
+          overlayId = "responsibilitySuggestionOverlay";
+        } else if (type === "outcome") {
+          suggestions = dimSuggestions.outcomes || [];
+          titleText = "Suggested Outcomes";
+          overlayId = "outcomeSuggestionOverlay";
+        }
+
+        document
+          .getElementById("goalSuggestionOverlay")
+          ?.classList.add("hidden");
+        document
+          .getElementById("stepsSuggestionOverlay")
+          ?.classList.add("hidden");
+        document
+          .getElementById("responsibilitySuggestionOverlay")
+          ?.classList.add("hidden");
+        document
+          .getElementById("outcomeSuggestionOverlay")
+          ?.classList.add("hidden");
+
+        const overlay = document.getElementById(overlayId);
+        if (!overlay) return;
+
+        const suggestionsList = suggestions
+          .map(
+            (sugg, idx) =>
+              `<div class="ai-suggestion-item" onclick="applySuggestion('${type}', '${sugg.replace(/'/g, "\\'")}', event)">${sugg}</div>`,
+          )
+          .join("");
+
+        overlay.innerHTML = `
+        <h6><i class="fas fa-sparkles"></i>${titleText}</h6>
+        <div class="ai-suggestions-list">
+          ${suggestionsList}
+        </div>
+      `;
+
+        const iconRect = element.getBoundingClientRect();
+        const overlayWidth = 300;
+        const overlayHeight = 300;
+        const margin = 8;
+
+        overlay.style.position = "fixed";
+
+        let top = iconRect.top - margin;
+        let left;
+
+        if (type === "goal" || type === "outcome") {
+          left = iconRect.left - overlayWidth - margin;
+          if (left < 0) {
+            left = iconRect.right + margin;
+          }
+        } else if (type === "steps") {
+          left = iconRect.right + margin;
+          if (left + overlayWidth > window.innerWidth) {
+            left = iconRect.left - overlayWidth - margin;
+          }
+        } else if (type === "responsibility") {
+          left = iconRect.left - 140 - margin;
+          if (left < 0) {
+            left = iconRect.right + margin;
+          }
+        }
+
+        if (top < 0) {
+          top = margin;
+        } else if (top + overlayHeight > window.innerHeight) {
+          top = window.innerHeight - overlayHeight - margin;
+        }
+
+        overlay.style.top = top + "px";
+        overlay.style.left = left + "px";
+
+        overlay.classList.remove("hidden");
+        overlay.style.display = "block";
+
+        activeAISuggestionTarget = getAISuggestionTarget(type, element);
+        if (event) event.stopPropagation();
+      }
+
+      function getAISuggestionTarget(type, element) {
+        if (!element) return null;
+        if (type === "steps") {
+          return (
+            element.closest(".col-md-3")?.querySelector(".action-step-input") ||
+            null
+          );
+        }
+        if (type === "responsibility") {
+          return (
+            element
+              .closest(".col-md-3")
+              ?.querySelector(".responsibility-input") || null
+          );
+        }
+        return null;
+      }
+
+      function applySuggestion(type, val, event) {
+        if (event) event.stopPropagation();
+        if (type === "goal") {
+          document.getElementById("modalGoal").value = val;
+          closeSideDiv();
+        } else if (type === "steps") {
+          if (activeAISuggestionTarget) {
+            activeAISuggestionTarget.value = val;
+          } else {
+            const textareas = document.querySelectorAll(".action-step-input");
+            if (textareas.length > 0) {
+              textareas[textareas.length - 1].value = val;
+            } else {
+              document.getElementById("modalSteps").value = val;
+            }
+          }
+          closeSideDiv();
+        } else if (type === "outcome") {
+          document.getElementById("modalOutcome").value = val;
+          closeSideDiv();
+        } else if (type === "responsibility") {
+          if (activeAISuggestionTarget) {
+            activeAISuggestionTarget.value = val;
+          } else {
+            const respInputs = document.querySelectorAll(
+              ".responsibility-input",
+            );
+            if (respInputs.length > 0) {
+              respInputs[respInputs.length - 1].value = val;
+            } else {
+              document.getElementById("modalResponsibility").value = val;
+            }
+          }
+          closeSideDiv();
+        }
+      }
+
+      function closeSideDiv() {
+        activeAISuggestionTarget = null;
+        closeAISuggestionsOverlay();
+        document
+          .getElementById("goalSuggestionOverlay")
+          ?.classList.add("hidden");
+        document
+          .getElementById("stepsSuggestionOverlay")
+          ?.classList.add("hidden");
+        document
+          .getElementById("responsibilitySuggestionOverlay")
+          ?.classList.add("hidden");
+        document
+          .getElementById("outcomeSuggestionOverlay")
+          ?.classList.add("hidden");
+      }
+
+      function closeAISuggestionsOverlay() {
+        const overlays = [
+          "goalSuggestionOverlay",
+          "stepsSuggestionOverlay",
+          "responsibilitySuggestionOverlay",
+          "outcomeSuggestionOverlay",
+        ];
+        overlays.forEach((id) => {
+          const overlay = document.getElementById(id);
+          if (overlay) {
+            overlay.classList.add("hidden");
+            overlay.style.display = "none";
+          }
+        });
+      }
+
+      function showToast(message, type = "success") {
+        const toast = document.getElementById("surveyToast");
+        const msg = document.getElementById("toastMessage");
+        const icon = toast.querySelector(".toast-icon i");
+        const title = toast.querySelector(".toast-body h6");
+
+        if (!toast || !msg || !icon || !title) return;
+
+        const normalizedType = (type || "success").toLowerCase();
+        if (normalizedType === "error") {
+          icon.className = "fas fa-times-circle";
+          title.innerText = "Error";
+        } else if (normalizedType === "warning") {
+          icon.className = "fas fa-exclamation-triangle";
+          title.innerText = "Warning";
+        } else if (normalizedType === "info") {
+          icon.className = "fas fa-info-circle";
+          title.innerText = "Info";
+        } else {
+          icon.className = "fas fa-check-circle";
+          title.innerText = "Success";
+        }
+
+        msg.innerHTML = message;
+        toast.classList.remove("hidden");
+
+        if (toast._toastTimeout) {
+          clearTimeout(toast._toastTimeout);
+        }
+
+        toast._toastTimeout = setTimeout(() => {
+          toast.classList.add("hidden");
+        }, 4000);
+      }
+
+      function addActionStepRow() {
+        const container = document.getElementById("actionStepsContainer");
+        const rowCount = container.querySelectorAll(".action-step-row").length;
+        const newRow = document.createElement("div");
+        newRow.className = "action-step-row";
+        newRow.setAttribute("data-row-index", rowCount);
+
+        newRow.innerHTML = `
+        <div class="step-header" onclick="toggleActionStepRow(${rowCount})">
+          <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+            <div class="step-number">${rowCount + 1}</div>
+            <div class="step-title">Action Step ${rowCount + 1}</div>
+          </div>
+          <div class="step-toggle"><i class="fa fa-chevron-down"></i></div>
+        </div>
+        <div class="step-content expanded">
+          <div class="button-add-delete">
+            <button type="button" class="btn btn-sm" onclick="removeActionStepRow(${rowCount})" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"></path>
+              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"></path>
+            </svg></button>
+            <button type="button" class="btn btn-sm" onclick="addActionStepRow()" title="Add"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
+            </svg></button>
+          </div>
+          <div class="row mb-2 g-2">
+            <div class="col-md-3">
+              <label class="form-label small text-secondary">Action Steps <img
+                        src="images/sparkle-ai-icon.svg"
+                        class="ai-icon cursor-pointer" onclick="toggleAISideDiv('steps', this)"
+                      /> </label>
+              <textarea class="form-control form-control-sm action-step-input" placeholder="Enter steps..." rows="2"></textarea>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small text-secondary">Resources</label>
+              <input type="text" class="form-control form-control-sm resource-input" placeholder="Budget, etc..." />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small text-secondary">Responsibility <img
+                        src="images/sparkle-ai-icon.svg"
+                        class="ai-icon cursor-pointer" onclick="toggleAISideDiv('responsibility', this)"
+                      /></label>
+              <input type="text" class="form-control form-control-sm responsibility-input" placeholder="Person/Team" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small text-secondary">Completion Date</label>
+              <input type="date" class="form-control form-control-sm completion-date-input" />
+            </div>
+          </div>
+        </div>
+      `;
+
+        container.appendChild(newRow);
+      }
+
+      function toggleActionStepRow(index) {
+        const container = document.getElementById("actionStepsContainer");
+        const rows = container.querySelectorAll(".action-step-row");
+        const row = rows[index];
+        const content = row.querySelector(".step-content");
+        const toggle = row.querySelector(".step-toggle i");
+
+        content.classList.toggle("expanded");
+        toggle.classList.toggle("collapsed");
+      }
+
+      function removeActionStepRow(index) {
+        const container = document.getElementById("actionStepsContainer");
+        const rows = container.querySelectorAll(".action-step-row");
+        if (rows.length > 1) {
+          rows[index]?.remove();
+        } else {
+          showToast("You must have at least one action step", "warning");
+        }
+      }
+
+      function saveActionPlanFromForm() {
+        const dimSelect = document.getElementById("modalDimension");
+        const dim = dimSelect.value;
+        const dimText = dimSelect.options[dimSelect.selectedIndex].text;
+        const item = document.getElementById("modalItem").value;
+        const goal = document.getElementById("modalGoal").value;
+        const outcome = document.getElementById("modalOutcome").value;
+
+        if (!dim || dim === "0") {
+          showToast("Please select a MCARES Dimension", "warning");
+          return;
+        }
+        if (!item) {
+          showToast("Please select a MCARES Item", "warning");
+          return;
+        }
+        if (!goal) {
+          showToast("Please define a goal", "warning");
+          return;
+        }
+        if (!outcome) {
+          showToast("Please enter the desired outcome", "warning");
+          return;
+        }
+
+        const stepRows = document.querySelectorAll(
+          "#actionStepsContainer .action-step-row",
+        );
+        if (stepRows.length === 0) {
+          showToast("Please add at least one action step", "warning");
+          return;
+        }
+
+        const selectedRadio = document.querySelector(
+          "input[name='mcaresItem']:checked",
+        );
+        const score = selectedRadio
+          ? selectedRadio.getAttribute("data-score")
+          : "";
+        const itemId = selectedRadio ? selectedRadio.value : "";
+
+        if (!score) {
+          showToast("Please select a MCARES Item", "warning");
+          return;
+        }
+
+        var goalItemMapArray = [];
+        stepRows.forEach(function (row) {
+          var stepInput = row.querySelector(".action-step-input");
+          var resourceInput = row.querySelector(".resource-input");
+          var responsibilityInput = row.querySelector(".responsibility-input");
+          var dateInput = row.querySelector(".completion-date-input");
+
+          if (stepInput && stepInput.value) {
+            goalItemMapArray.push({
+              actionSteps: stepInput.value,
+              resourseRequired: resourceInput ? resourceInput.value : "",
+              responsibility: responsibilityInput
+                ? responsibilityInput.value
+                : "",
+              completionDate: dateInput
+                ? formatDateForAPI(dateInput.value)
+                : "",
+            });
+          }
+        });
+
+        var formData = {
+          action_manager_map_id: apId,
+          dimensionId: dim,
+          itemId: itemId,
+          currentYearScore: score,
+          desiredOutcome: outcome,
+          action_goal_map: [
+            {
+              action_goal: goal,
+              goal_item_map: goalItemMapArray,
+            },
+          ],
+        };
+
+        var jsonDataToServer = JSON.stringify(formData);
+        var response = sendData(
+          "saveActionGoal",
+          jsonDataToServer,
+          "ActionPlanController",
+        );
+
+        if (
+          response != null &&
+          response != "" &&
+          response.indexOf("success") >= 0
+        ) {
+          apId = response.split("_")[1] || apId;
+          sessionStorage.setItem("apId", apId);
+          showToast("Action Plan saved successfully!", "success");
+          resetFormState();
+          sessionStorage.setItem("actionMode", "view");
+          window.location.href = "action_planning_submitted.html";
+        } else {
+          showToast("Action Plan saved successfully!", "success");
+          resetFormState();
+          goBackToMainPage();
+        }
+      }
+
+      function formatDateForAPI(dateStr) {
+        if (!dateStr) return "";
+
+        dateStr = dateStr.trim();
+
+        if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+          return dateStr;
+        }
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+          var parts = dateStr.split("-");
+          if (parts.length === 3) {
+            return parts[2] + "/" + parts[1] + "/" + parts[0];
+          }
+        }
+
+        return dateStr;
+      }
+
+      function updateActionPlan() {
+        const dimSelect = document.getElementById("modalDimension");
+        const dim = dimSelect.value;
+        const item = document.getElementById("modalItem").value;
+        const goal = document.getElementById("modalGoal").value;
+        const outcome = document.getElementById("modalOutcome").value;
+
+        const selectedRadio = document.querySelector(
+          "input[name='mcaresItem']:checked",
+        );
+        const itemId = selectedRadio ? selectedRadio.value : "";
+        const score = selectedRadio
+          ? selectedRadio.getAttribute("data-score")
+          : "";
+
+        const stepRows = document.querySelectorAll(
+          "#actionStepsContainer .action-step-row",
+        );
+
+        var goalItemMapArray = [];
+        stepRows.forEach(function (row) {
+          var stepInput = row.querySelector(".action-step-input");
+          var resourceInput = row.querySelector(".resource-input");
+          var responsibilityInput = row.querySelector(".responsibility-input");
+          var dateInput = row.querySelector(".completion-date-input");
+
+          if (stepInput && stepInput.value) {
+            goalItemMapArray.push({
+              actionSteps: stepInput.value,
+              resourseRequired: resourceInput ? resourceInput.value : "",
+              responsibility: responsibilityInput
+                ? responsibilityInput.value
+                : "",
+              completionDate: dateInput
+                ? formatDateForAPI(dateInput.value)
+                : "",
+            });
+          }
+        });
+
+        var formData = {
+          action_goal_id: editGoalId,
+          itemId: itemId,
+          currentYearScore: score,
+          action_goal: goal,
+          desiredOutcome: outcome,
+          goal_item_map: goalItemMapArray,
+        };
+
+        var jsonDataToServer = JSON.stringify(formData);
+        var response = sendData(
+          "updateGoalDetails",
+          jsonDataToServer,
+          "ActionPlanController",
+        );
+
+        if (response != null && response != "") {
+          showToast("Action Plan updated successfully!", "success");
+          sessionStorage.setItem("actionMode", "view");
+          window.location.href = "action_planning_submitted.html";
+        } else {
+          showToast("Failed to update Action Plan. Please try again.", "error");
+        }
+      }
+
+      function resetFormState() {
+        const planForm = document.getElementById("planForm");
+        if (planForm) planForm.reset();
+
+        const modalItem = document.getElementById("modalItem");
+        if (modalItem) modalItem.value = "";
+
+        const radios = document.querySelectorAll("input[name='mcaresItem']");
+        radios.forEach((radio) => (radio.checked = false));
+
+        const addBtn = document.getElementById("addBtn");
+        if (addBtn) addBtn.classList.remove("d-none");
+
+        const updateBtn = document.getElementById("updateBtn");
+        if (updateBtn) updateBtn.classList.add("d-none");
+
+        closeAISuggestionsOverlay();
+
+        const mcaresItemsList = document.getElementById("mcaresItemsList");
+        const toggleBtn = document.getElementById("toggleMcaresBtn");
+        const toggleMcaresIcon = document.getElementById("toggleMcaresIcon");
+        const toggleMcaresText = document.getElementById("toggleMcaresText");
+
+        if (mcaresItemsList) {
+          mcaresItemsList.innerHTML =
+            '<div class="text-center text-muted small p-1">Select a dimension first</div>';
+          mcaresItemsList.style.maxHeight = "200px";
+        }
+        if (toggleBtn) {
+          toggleBtn.style.display = "none";
+        }
+        if (toggleMcaresIcon) {
+          toggleMcaresIcon.className = "fa fa-chevron-down";
+        }
+        if (toggleMcaresText) {
+          toggleMcaresText.textContent = "Collapse";
+        }
+      }
+
+      document.addEventListener("click", function (event) {
+        const overlays = [
+          "goalSuggestionOverlay",
+          "stepsSuggestionOverlay",
+          "responsibilitySuggestionOverlay",
+          "outcomeSuggestionOverlay",
+        ];
+
+        let clickedOnOverlay = false;
+        for (let overlayId of overlays) {
+          const overlay = document.getElementById(overlayId);
+          if (overlay && overlay.contains(event.target)) {
+            clickedOnOverlay = true;
+            break;
+          }
+        }
+
+        const isAIIcon = event.target.closest('[onclick*="toggleAISideDiv"]');
+
+        if (!clickedOnOverlay && !isAIIcon) {
+          overlays.forEach((overlayId) => {
+            const overlay = document.getElementById(overlayId);
+            if (overlay) {
+              overlay.classList.add("hidden");
+              overlay.style.display = "none";
+            }
+          });
+        }
+      });
+
+      window.showMcaresItemsTable = showMcaresItemsTable;
+      window.toggleAISideDiv = toggleAISideDiv;
+      window.selectMcaresItem = selectMcaresItem;
+      window.addEventListener("load", function () {
+        console.log("Page Loaded");
+        initWelcomeEarly();
+      });
+    </script>
+  </body>
+</html>
